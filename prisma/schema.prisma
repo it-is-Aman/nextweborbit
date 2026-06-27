@@ -1,0 +1,119 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// Statistics for "Our Impact by Numbers"
+model Statistic {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  label     String
+  icon      String
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive, order])
+}
+
+// Newsletter Subscribers
+model NewsletterSubscriber {
+  id             String    @id @default(cuid())
+  email          String    @unique
+  isActive       Boolean   @default(true)
+  subscribedAt   DateTime  @default(now())
+  unsubscribedAt DateTime?
+
+  @@index([email])
+  @@index([isActive])
+}
+
+// Team Members for "The Squad"
+model TeamMember {
+  id        String   @id @default(cuid())
+  name      String
+  role      String
+  bio       String   @db.Text
+  image     String
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([isActive, order])
+}
+
+// Job Listings
+model Job {
+  id              String   @id @default(cuid())
+  title           String
+  description     String   @db.Text
+  location        String?
+  employmentTypes String
+  googleFormUrl   String?
+  isActive        Boolean  @default(true)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([isActive])
+}
+
+// Contact Form Submissions
+model ContactSubmission {
+  id          String    @id @default(cuid())
+  firstName   String
+  lastName    String?
+  email       String
+  phone       String?
+  company     String?
+  service     String?
+  message     String    @db.Text
+  status      String    @default("new") // new, read, replied, closed
+  submittedAt DateTime  @default(now())
+  readAt      DateTime?
+
+  @@index([status])
+  @@index([submittedAt])
+}
+
+// Analytics - Page Views
+model PageView {
+  id        String   @id @default(cuid())
+  path      String
+  referrer  String?  @db.Text
+  userAgent String?  @db.Text
+  ipHash    String?  // Anonymized IP for unique visitor approximation
+  country   String?
+  createdAt DateTime @default(now())
+
+  @@index([path])
+  @@index([createdAt]) 
+}
+
+// Portfolio Items
+model PortfolioItem {
+  id          String   @id @default(cuid())
+  name        String
+  category    String
+  type        String   // Our Product, Realstate Website, Landing Website, Static Website, Dynamic Website
+  description String   @db.Text
+  preview     String   // Legacy: Image URL or Thum.io
+  imageUrl    String?  // New: Uploaded image or direct URL
+  projectLink String?  // New: Link to the project
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([type, isActive, order])
+  @@index([isActive])
+}

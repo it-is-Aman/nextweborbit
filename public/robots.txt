@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://nextweborbit.in
+
+# Sitemaps
+Sitemap: https://nextweborbit.in/sitemap.xml
