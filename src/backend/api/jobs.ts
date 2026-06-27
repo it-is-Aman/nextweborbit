@@ -3,6 +3,36 @@ import { prisma } from '@/backend/lib/prisma'
 import type { ApiResponse, JobsResponse } from '@/types/api'
 import { jobSchema } from '@/shared/validation'
 
+const MOCK_JOBS = [
+    {
+        id: 'senior-frontend-dev',
+        title: 'Senior Frontend Developer',
+        description: 'We are looking for an experienced frontend developer to join our team and build amazing user experiences.',
+        location: 'Noida, INDIA',
+        employmentTypes: 'Full-time',
+        googleFormUrl: 'https://google.com',
+        isActive: true
+    },
+    {
+        id: 'ui-ux-designer',
+        title: 'UI/UX Designer',
+        description: 'Join our design team to create beautiful and intuitive interfaces for our clients.',
+        location: 'Noida, INDIA',
+        employmentTypes: 'Full-time',
+        googleFormUrl: 'https://google.com',
+        isActive: true
+    },
+    {
+        id: 'digital-marketing-specialist',
+        title: 'Digital Marketing Specialist',
+        description: 'Help our clients grow their online presence through strategic marketing campaigns.',
+        location: 'Noida, INDIA',
+        employmentTypes: 'Full-time',
+        googleFormUrl: 'https://google.com',
+        isActive: true
+    }
+];
+
 export async function getJobs() {
     try {
         const jobs = await prisma.job.findMany({
@@ -34,7 +64,23 @@ export async function getJobs() {
         }
 
         return NextResponse.json(response)
-    } catch (error) {
+    } catch (error: any) {
+        const isConnectionError = 
+            error.code?.startsWith('P1') || 
+            error.message?.includes('Can\'t reach database server') ||
+            error.message?.includes('PrismaClientInitializationError') ||
+            error.name === 'PrismaClientInitializationError';
+
+        if (isConnectionError) {
+            console.warn('[Prisma] Database connection offline. Falling back to local mock jobs.');
+            return NextResponse.json({
+                success: true,
+                data: {
+                    jobs: MOCK_JOBS
+                }
+            });
+        }
+
         console.error('Jobs API Error:', error)
 
         const errorResponse: ApiResponse = {

@@ -8,7 +8,7 @@ import { metadata as siteMetadata } from "@/config/site";
 import JsonLd from "@/frontend/components/seo/json-ld";
 // import { MouseEffect } from "@/frontend/animations";
 import { ToastProvider } from "@/frontend/components/ui/toast";
-import { AnalyticsTracker } from "@/frontend/components/analytics/tracker";
+// import { AnalyticsTracker } from "@/frontend/components/analytics/tracker";
 import { ScrollToTop } from "@/frontend/components/ui/scroll-to-top";
 import { Suspense } from "react";
 import { ClientWrapper } from "./client-wrapper";
@@ -73,9 +73,9 @@ export default function RootLayout({
           <ClientWrapper>
             {children}
           </ClientWrapper>
-          <Suspense fallback={null}>
+          {/* <Suspense fallback={null}>
             <AnalyticsTracker />
-          </Suspense>
+          </Suspense> */}
         </ToastProvider>
       </body>
     </html>

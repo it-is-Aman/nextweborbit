@@ -3,6 +3,36 @@ import { prisma } from '@/backend/lib/prisma'
 import type { ApiResponse, TeamResponse } from '@/types/api'
 import { teamMemberSchema } from '@/shared/validation'
 
+const MOCK_TEAM_MEMBERS = [
+    {
+        id: "1",
+        name: "Aman",
+        role: "Founder & Lead Architect",
+        bio: "Passionate engineer focusing on creating premium, scalable digital experiences.",
+        image: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=800&q=80",
+        order: 1,
+        isActive: true
+    },
+    {
+        id: "2",
+        name: "Sarah Chen",
+        role: "UI/UX Design Lead",
+        bio: "Detail-oriented designer crafting intuitive visual systems and animations.",
+        image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=800&q=80",
+        order: 2,
+        isActive: true
+    },
+    {
+        id: "3",
+        name: "David Kim",
+        role: "Senior Full Stack Developer",
+        bio: "Expert in building highly-optimized APIs, database structures, and backend systems.",
+        image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=800&q=80",
+        order: 3,
+        isActive: true
+    }
+];
+
 export async function getTeamMembers() {
     try {
         // Fetch active team members from database, ordered by order field
@@ -33,7 +63,23 @@ export async function getTeamMembers() {
         }
 
         return NextResponse.json(response)
-    } catch (error) {
+    } catch (error: any) {
+        const isConnectionError = 
+            error.code?.startsWith('P1') || 
+            error.message?.includes('Can\'t reach database server') ||
+            error.message?.includes('PrismaClientInitializationError') ||
+            error.name === 'PrismaClientInitializationError';
+
+        if (isConnectionError) {
+            console.warn('[Prisma] Database connection offline. Falling back to local mock team members.');
+            return NextResponse.json({
+                success: true,
+                data: {
+                    members: MOCK_TEAM_MEMBERS
+                }
+            });
+        }
+
         console.error('Team API Error:', error)
 
         const errorResponse: ApiResponse = {
