@@ -44,3 +44,20 @@ images
 
 
 /lib/generated/prisma
+
+# Generated sitemaps and robots
+/public/sitemap.xml
+/public/sitemap-*.xml
+/public/robots.txt
+
+# Media and user uploads
+/public/uploads/
+/public/videos/
+
+# Temporary files and logs
+/tmp/
+*.json.log
+eslint_output.json
+eslint-output.json
+lint-output.txt
+lint-results.json

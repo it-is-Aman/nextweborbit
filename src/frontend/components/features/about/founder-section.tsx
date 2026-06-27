@@ -55,7 +55,7 @@ export default function FounderSection() {
                     <div ref={maskRef} className="w-full h-full">
                         <div ref={imageWrapperRef} className="w-full h-full scale-110">
                             <Image
-                                src={img1}
+                                src={img1 || "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?w=900&h=900&fit=crop"} 
                                 alt="Co-founder"
                                 fill
                                 className="object-cover"
