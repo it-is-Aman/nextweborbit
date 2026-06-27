@@ -28,15 +28,15 @@ export default function AboutPage() {
   return (
     <main className="w-full bg-background min-h-screen">
       <Header />
-      {/* <AboutHero />
-      <TextRevealSection />
+      <AboutHero />
+      {/* <TextRevealSection /> */}
       <CultureSection />
-      <FounderSection />
+      {/* <FounderSection /> */}
       <JourneySection />
       <AboutClientsSection />
       <LeadershipSection />
       <JoinTeamBanner />
-      <InsightsSection /> */}
+      <InsightsSection />
       <Footer />
       <FloatingButtons />
     </main>
