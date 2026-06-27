@@ -6,7 +6,7 @@ export const metadata: Metadata = {
   description:
     'Contact Next Web Orbit for Website Development, Software Development, SEO & Digital Marketing services in Noida, India.',
   alternates: {
-    canonical: 'https://nextweborbit.in/contact',
+    canonical: 'https://nextweborbit.com/contact',
   },
   robots: {
     index: true,
@@ -21,14 +21,14 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: 'website',
-    url: 'https://nextweborbit.in/contact',
+    url: 'https://nextweborbit.com/contact',
     title: 'Contact Us | Next Web Orbit – IT Company in Noida',
     description:
       'Get in touch with Next Web Orbit for Web Development, Software & Digital Marketing services.',
     siteName: 'Next Web Orbit',
     images: [
       {
-        url: 'https://nextweborbit.in/uploads/logo-1765640552599-591203543.png',
+        url: 'https://nextweborbit.com/uploads/logo-1765640552599-591203543.png',
         width: 1200,
         height: 630,
         alt: 'Next Web Orbit',
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     title: 'Contact Us | Next Web Orbit',
     description:
       'Get in touch with Next Web Orbit for IT and digital marketing services.',
-    images: ['https://nextweborbit.in/uploads/logo-1765640552599-591203543.png'],
+    images: ['https://nextweborbit.com/uploads/logo-1765640552599-591203543.png'],
   },
 }
 

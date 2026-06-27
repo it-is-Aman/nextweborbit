@@ -7,7 +7,7 @@ export default function PortfolioPage() {
   return (
     <main className="min-h-screen">
       <Header />
-      <PortfolioSection />
+      {/* <PortfolioSection /> */}
       <Footer />
       <FloatingButtons />
     </main>

@@ -34,7 +34,7 @@ export async function GET() {
 
             // Fetch Data
             // Note: siteUrl must match exactly what is in GSC (sc-domain:yourdomain.com or https://...)
-            const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nextweborbit.in';
+            const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://nextweborbit.com';
 
             const res = await searchconsole.searchanalytics.query({
                 siteUrl: siteUrl,
