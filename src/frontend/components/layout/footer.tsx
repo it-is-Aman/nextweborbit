@@ -217,7 +217,7 @@ const Footer = () => {
                   >
                     <MapPin className="w-5 h-5 shrink-0 mt-1 group-hover:text-blue-500 transition-colors" />
                     <div>
-                      <span className="block text-xs font-bold text-primary mb-0.5 uppercase tracking-wider group-hover:text-white transition-colors">{office.label}</span>
+                      <span className="block text-xs font-bold text-white mb-0.5 uppercase tracking-wider transition-colors">{office.label}</span>
                       <span className="leading-snug block">{office.value}</span>
                     </div>
                   </a>
@@ -296,7 +296,7 @@ const Footer = () => {
         </div>
 
         {/* Capsule Outlined Social Buttons (Image 5 Style) */}
-        <motion.div 
+        {/* <motion.div 
           className="flex flex-wrap justify-center gap-3 sm:gap-4 md:gap-6 mb-12 pt-6 border-t border-white/5"
           initial={{ opacity: 0, y: 15 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -320,7 +320,7 @@ const Footer = () => {
                     {social.name}
                 </a>
             ))}
-        </motion.div>
+        </motion.div> */}
 
         {/* Social Media (Circular Row) */}
         <motion.div

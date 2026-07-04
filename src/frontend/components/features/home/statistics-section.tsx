@@ -40,51 +40,51 @@ export default function StatisticsSection() {
     }, [])
 
     return (
-        <section className="bg-[#050505] text-white relative overflow-hidden border-t border-white/5 font-sans">
+        <section className="bg-[#FAF9F6] text-neutral-900 relative overflow-hidden border-t border-neutral-200/60 font-sans">
             {/* Background overlay pattern */}
-            <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#ffffff_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
+            <div className="absolute inset-0 opacity-[0.03] bg-[radial-gradient(#000000_1px,transparent_1px)] [background-size:24px_24px] pointer-events-none" />
             
             <div className="container mx-auto max-w-[1400px] px-4 py-16 md:py-24 relative z-10">
-                <div className="border border-white/10 rounded-3xl overflow-hidden bg-[#0c0c0c] shadow-2xl">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-white/10">
+                <div className="border border-neutral-200/80 rounded-3xl overflow-hidden bg-white shadow-[0_10px_45px_-10px_rgba(0,0,0,0.04)]">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-neutral-200/80">
                         
                         {/* ROW 1 */}
                         
                         {/* 235+ Finished Projects */}
-                        <div className="p-10 flex flex-col justify-center min-h-[220px] relative hover:bg-white/[0.01] transition-colors duration-300">
+                        <div className="p-10 flex flex-col justify-center min-h-[220px] relative hover:bg-neutral-50/50 transition-colors duration-300">
                             <div className="flex items-start justify-between">
-                                <span className="text-5xl sm:text-6xl font-black font-mono tracking-tighter leading-none text-white">
+                                <span className="text-5xl sm:text-6xl font-black font-mono tracking-tighter leading-none text-neutral-900">
                                     {animatedNumbers.projects}+
                                 </span>
-                                <span className="w-2.5 h-2.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899] mt-2" />
+                                <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)] mt-2" />
                             </div>
-                            <span className="text-neutral-400 font-bold uppercase tracking-wider text-xs sm:text-sm mt-6">
+                            <span className="text-neutral-500 font-bold uppercase tracking-wider text-xs sm:text-sm mt-6">
                                 Finished Projects
                             </span>
                         </div>
 
                         {/* 25+ Team Members */}
-                        <div className="p-10 flex flex-col justify-center min-h-[220px] relative hover:bg-white/[0.01] transition-colors duration-300">
+                        <div className="p-10 flex flex-col justify-center min-h-[220px] relative hover:bg-neutral-50/50 transition-colors duration-300">
                             <div className="flex items-start justify-between">
-                                <span className="text-5xl sm:text-6xl font-black font-mono tracking-tighter leading-none text-white">
+                                <span className="text-5xl sm:text-6xl font-black font-mono tracking-tighter leading-none text-neutral-900">
                                     {animatedNumbers.team}+
                                 </span>
-                                <span className="w-2.5 h-2.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899] mt-2" />
+                                <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)] mt-2" />
                             </div>
-                            <span className="text-neutral-400 font-bold uppercase tracking-wider text-xs sm:text-sm mt-6">
+                            <span className="text-neutral-500 font-bold uppercase tracking-wider text-xs sm:text-sm mt-6">
                                 Team Members
                             </span>
                         </div>
 
                         {/* 138+ Happy Customers */}
-                        <div className="p-10 flex flex-col justify-center min-h-[220px] relative hover:bg-white/[0.01] transition-colors duration-300">
+                        <div className="p-10 flex flex-col justify-center min-h-[220px] relative hover:bg-neutral-50/50 transition-colors duration-300">
                             <div className="flex items-start justify-between">
-                                <span className="text-5xl sm:text-6xl font-black font-mono tracking-tighter leading-none text-white">
+                                <span className="text-5xl sm:text-6xl font-black font-mono tracking-tighter leading-none text-neutral-900">
                                     {animatedNumbers.customers}+
                                 </span>
-                                <span className="w-2.5 h-2.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899] mt-2" />
+                                <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)] mt-2" />
                             </div>
-                            <span className="text-neutral-400 font-bold uppercase tracking-wider text-xs sm:text-sm mt-6">
+                            <span className="text-neutral-500 font-bold uppercase tracking-wider text-xs sm:text-sm mt-6">
                                 Happy Customers
                             </span>
                         </div>
@@ -92,56 +92,56 @@ export default function StatisticsSection() {
                     </div>
 
                     {/* Horizontal dividing line */}
-                    <div className="hidden lg:block w-full h-[1px] bg-white/10" />
+                    <div className="hidden lg:block w-full h-[1px] bg-neutral-200/80" />
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-white/10">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 divide-y lg:divide-y-0 lg:divide-x divide-neutral-200/80">
                         
                         {/* ROW 2 */}
 
                         {/* 42+ Loyal Partners */}
-                        <div className="p-10 flex flex-col justify-center min-h-[220px] relative hover:bg-white/[0.01] transition-colors duration-300">
+                        <div className="p-10 flex flex-col justify-center min-h-[220px] relative hover:bg-neutral-50/50 transition-colors duration-300">
                             <div className="flex items-start justify-between">
-                                <span className="text-5xl sm:text-6xl font-black font-mono tracking-tighter leading-none text-white">
+                                <span className="text-5xl sm:text-6xl font-black font-mono tracking-tighter leading-none text-neutral-900">
                                     {animatedNumbers.partners}+
                                 </span>
-                                <span className="w-2.5 h-2.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899] mt-2" />
+                                <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)] mt-2" />
                             </div>
-                            <span className="text-neutral-400 font-bold uppercase tracking-wider text-xs sm:text-sm mt-6">
+                            <span className="text-neutral-500 font-bold uppercase tracking-wider text-xs sm:text-sm mt-6">
                                 Loyal Partners
                             </span>
                         </div>
 
                         {/* 15,628+ Coffee Drinked */}
-                        <div className="p-10 flex flex-col justify-center min-h-[220px] relative hover:bg-white/[0.01] transition-colors duration-300">
+                        <div className="p-10 flex flex-col justify-center min-h-[220px] relative hover:bg-neutral-50/50 transition-colors duration-300">
                             <div className="flex items-start justify-between">
-                                <span className="text-5xl sm:text-6xl font-black font-mono tracking-tighter leading-none text-white">
+                                <span className="text-5xl sm:text-6xl font-black font-mono tracking-tighter leading-none text-neutral-900">
                                     {animatedNumbers.coffee.toLocaleString()}+
                                 </span>
-                                <span className="w-2.5 h-2.5 rounded-full bg-pink-500 shadow-[0_0_8px_#ec4899] mt-2" />
+                                <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)] mt-2" />
                             </div>
-                            <span className="text-neutral-400 font-bold uppercase tracking-wider text-xs sm:text-sm mt-6">
+                            <span className="text-neutral-500 font-bold uppercase tracking-wider text-xs sm:text-sm mt-6">
                                 Coffee Drinked
                             </span>
                         </div>
 
-                        {/* Contact Block (Purple gradient solid block) */}
-                        <Link href="/contact" className="group p-10 flex flex-col justify-between min-h-[220px] relative bg-gradient-to-br from-[#800080] via-[#8B008B] to-[#4B0082] hover:opacity-95 transition-opacity duration-300 overflow-hidden cursor-pointer select-none">
-                            <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                            <div className="flex items-start justify-between">
+                        {/* Contact Block (Orange gradient solid block) */}
+                        <Link href="/contact" className="group p-10 flex flex-col justify-between min-h-[220px] relative bg-gradient-to-br from-[#FF9F00] via-[#E08C00] to-orange-600 hover:opacity-95 transition-opacity duration-300 overflow-hidden cursor-pointer select-none">
+                            <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                            <div className="flex items-start justify-between relative z-10">
                                 <div className="flex flex-col">
-                                    <span className="text-2xl font-black uppercase tracking-wider text-white">
+                                    <span className="text-2xl font-black uppercase tracking-wider text-black">
                                         CONTACT
                                     </span>
-                                    <span className="text-white/80 font-bold tracking-wide text-xs sm:text-sm mt-2">
+                                    <span className="text-black/85 font-bold tracking-wide text-xs sm:text-sm mt-2">
                                         Get A Quote For Your Project
                                     </span>
                                 </div>
-                                <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white border border-white/20 transform group-hover:scale-105 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all">
+                                <div className="w-12 h-12 rounded-full bg-black/10 flex items-center justify-center text-black border border-black/20 transform group-hover:scale-105 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all">
                                     <Send className="w-5 h-5 fill-current stroke-0" />
                                 </div>
                             </div>
                             {/* Visual highlight circle */}
-                            <div className="absolute -bottom-16 -right-16 w-36 h-36 rounded-full bg-white/5 blur-xl pointer-events-none" />
+                            <div className="absolute -bottom-16 -right-16 w-36 h-36 rounded-full bg-white/10 blur-xl pointer-events-none" />
                         </Link>
 
                     </div>

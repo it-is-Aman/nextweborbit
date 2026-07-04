@@ -8,6 +8,7 @@ const ClientsSection = dynamic(() => import("./clients-section"), { ssr: false }
 const PortfolioSection = dynamic(() => import("./portfolio-section"), { ssr: false });
 const ServicesSection = dynamic(() => import("./services-section"), { ssr: false });
 const WhyChooseUsSection = dynamic(() => import("./why-choose-us-section"), { ssr: false });
+const IndustriesServe = dynamic(() => import("./industries-serve"), { ssr: false });
 const StatisticsSection = dynamic(() => import("./statistics-section"), { ssr: false });
 const TechnologiesSection = dynamic(() => import("./technologies-section"), { ssr: false });
 const ReviewMarquee = dynamic(() => import("./review-marquee"), { ssr: false });
@@ -21,19 +22,20 @@ const BlogSection = dynamic(() => import("./blog-section"), { ssr: false });
 export default function HomeInteractiveSegments() {
     return (
         <>
-            <Suspense fallback={<div className="h-screen bg-black flex items-center justify-center">Loading...</div>}>
+            {/* <Suspense fallback={<div className="h-screen bg-black flex items-center justify-center">Loading...</div>}>
                 <ProductSection />
-            </Suspense>
-            <ClientsSection />
-            <SolutionsSection />
+            </Suspense> */}
+            {/* <SolutionsSection /> */}
             <ServicesSection />
-            <PortfolioSection />
-            <BlogSection />
+            {/* <PortfolioSection /> */}
             <WorkflowSection />
             <WhyChooseUsSection />
+            <IndustriesServe />
             <TechnologiesSection />
             <StatisticsSection />
+            <ClientsSection />
             <ReviewMarquee />
+            <BlogSection />
             <FAQSection />
             <CTASection />
         </>
