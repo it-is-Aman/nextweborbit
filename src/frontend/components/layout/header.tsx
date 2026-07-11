@@ -6,7 +6,7 @@ import { motion } from 'framer-motion'
 import { useState, useRef } from 'react'
 import { Button } from '@/components/ui/button'
 import { ChevronDown } from 'lucide-react'
-import logo from '@/assets/image/logo.png'
+// import logo from '/images/logo-1.png'
 import CurvedMenu from '@/components/layout/curved-menu'
 
 const services = [
@@ -90,7 +90,7 @@ export default function Header() {
           >
             <Link href="/" className="flex items-center gap-3">
               <Image
-                src={logo}
+                src={'/images/logo-1.png'}
                 alt="NextWebOrbit Logo"
                 width={50}
                 height={50}

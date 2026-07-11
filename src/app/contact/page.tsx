@@ -28,7 +28,7 @@ export const metadata: Metadata = {
     siteName: 'Next Web Orbit',
     images: [
       {
-        url: 'https://nextweborbit.com/uploads/logo-1765640552599-591203543.png',
+        url: 'https://nextweborbit.com/images/logo-1png',
         width: 1200,
         height: 630,
         alt: 'Next Web Orbit',
@@ -41,7 +41,7 @@ export const metadata: Metadata = {
     title: 'Contact Us | Next Web Orbit',
     description:
       'Get in touch with Next Web Orbit for IT and digital marketing services.',
-    images: ['https://nextweborbit.com/uploads/logo-1765640552599-591203543.png'],
+    images: ['https://nextweborbit.com/images/logo-1png'],
   },
 }
 

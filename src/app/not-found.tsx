@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { Arvo } from 'next/font/google'
-import notFound from 'public/404_not-found-gif.gif'
+// import notFound from '/images/404_not-found-gif.gif'
 
 const arvo = Arvo({
   subsets: ['latin'],
@@ -18,7 +18,7 @@ export default function NotFound() {
           <div 
             className="h-[400px] bg-center bg-no-repeat flex items-start justify-center"
             style={{
-              backgroundImage: `url(${notFound.src})`,
+              backgroundImage: `url('/images/404_not-found-gif.gif')`,
               backgroundSize: 'cover',
               backgroundPosition: 'center'
             }}
