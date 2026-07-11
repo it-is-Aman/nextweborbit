@@ -34,7 +34,7 @@ export async function apiClient<T>(
 
         if (!response.ok) {
             const error = await response.json().catch(() => ({ message: 'Request failed' }))
-            throw new ApiError(response.status, error.message || `HTTP ${response.status}`)
+            throw new ApiError(response.status, error.error || error.message || `HTTP ${response.status}`)
         }
 
         return response.json()

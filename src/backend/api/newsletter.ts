@@ -35,35 +35,44 @@ export async function handleNewsletterSubscription(request: NextRequest) {
 
         const { email } = validation.data
 
-        // Check if email already exists
-        const existing = await prisma.newsletterSubscriber.findUnique({
-            where: { email },
-        })
+        // Check if email already exists & update or create subscriber
+        let alreadySubscribed = false
+        try {
+            const existing = await prisma.newsletterSubscriber.findUnique({
+                where: { email },
+            })
 
-        if (existing) {
-            if (existing.isActive) {
-                return NextResponse.json(
-                    {
-                        success: false,
-                        error: 'This email is already subscribed to our newsletter.',
-                    },
-                    { status: 409 }
-                )
+            if (existing) {
+                if (existing.isActive) {
+                    alreadySubscribed = true
+                } else {
+                    // Reactivate subscription
+                    await prisma.newsletterSubscriber.update({
+                        where: { email },
+                        data: {
+                            isActive: true,
+                            unsubscribedAt: null,
+                        },
+                    })
+                }
             } else {
-                // Reactivate subscription
-                await prisma.newsletterSubscriber.update({
-                    where: { email },
-                    data: {
-                        isActive: true,
-                        unsubscribedAt: null,
-                    },
+                // Create new subscriber
+                await prisma.newsletterSubscriber.create({
+                    data: { email },
                 })
             }
-        } else {
-            // Create new subscriber
-            await prisma.newsletterSubscriber.create({
-                data: { email },
-            })
+        } catch (dbError) {
+            console.warn('[Newsletter API] Prisma subscriber operation failed (no DB connected?), proceeding with welcome email only:', dbError)
+        }
+
+        if (alreadySubscribed) {
+            return NextResponse.json(
+                {
+                    success: false,
+                    error: 'This email is already subscribed to our newsletter.',
+                },
+                { status: 409 }
+            )
         }
 
         // Send welcome email (async, don't wait)

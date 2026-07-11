@@ -34,21 +34,27 @@ export async function handleContactSubmission(request: NextRequest) {
 
         const data = validation.data
 
-        // Save to database
-        const submission = await prisma.contactSubmission.create({
-            data: {
-                firstName: data.firstName,
-                lastName: data.lastName,
-                email: data.email,
-                phone: data.phone,
-                company: data.company,
-                service: data.service,
-                message: data.message,
-            },
-        })
+        // Save to database (optional fallback if DB is not configured or offline)
+        let submissionId: string | null = null
+        try {
+            const submission = await prisma.contactSubmission.create({
+                data: {
+                    firstName: data.firstName,
+                    lastName: data.lastName,
+                    email: data.email,
+                    phone: data.phone,
+                    company: data.company,
+                    service: data.service,
+                    message: data.message,
+                },
+            })
+            submissionId = submission.id
+        } catch (dbError) {
+            console.warn('[Contact API] Prisma database save failed (no DB connected?), proceeding with email notification only:', dbError)
+        }
 
         // Send emails (async, don't wait)
-        if (process.env.RESEND_API_KEY) {
+        if (process.env.RESEND_API_KEY || process.env.SMTP_HOST) {
             Promise.all([
                 sendContactNotification(data),
                 sendContactConfirmation(data.email, data.firstName),
@@ -59,7 +65,7 @@ export async function handleContactSubmission(request: NextRequest) {
             success: true,
             data: {
                 message: 'Thank you for contacting us! We will get back to you soon.',
-                submissionId: submission.id,
+                submissionId,
             },
         })
     } catch (error) {

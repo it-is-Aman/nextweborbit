@@ -42,6 +42,7 @@ export default function ContactSection() {
   const [formData, setFormData] = useState({
     firstName: '', lastName: '', email: '', phone: '', company: '', service: '', message: '',
   })
+  const [errors, setErrors] = useState<{ [key: string]: string }>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [status, setStatus] = useState<'idle' | 'success' | 'error'>('idle')
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
@@ -57,8 +58,73 @@ export default function ContactSection() {
     setPuzzle({ num1: n1, num2: n2, sum: n1 + n2 })
   }, [])
 
+  const hasHtmlOrScript = (val: string) => {
+    const hasHtml = /<[^>]*>/g.test(val)
+    const hasScript = /(javascript:|onload=|onerror=|script)/gi.test(val)
+    return hasHtml || hasScript
+  }
+
+  const validateField = (name: string, value: string) => {
+    let error = ''
+    if (name === 'firstName') {
+      if (!value.trim()) {
+        error = 'First name is required'
+      } else if (value.length > 50) {
+        error = 'First name cannot exceed 50 characters'
+      } else if (hasHtmlOrScript(value)) {
+        error = 'HTML or scripts are not allowed'
+      }
+    } else if (name === 'lastName') {
+      if (value && value.length > 50) {
+        error = 'Last name cannot exceed 50 characters'
+      } else if (value && hasHtmlOrScript(value)) {
+        error = 'HTML or scripts are not allowed'
+      }
+    } else if (name === 'email') {
+      if (!value.trim()) {
+        error = 'Email address is required'
+      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
+        error = 'Invalid email address'
+      }
+    } else if (name === 'phone') {
+      if (!value.trim()) {
+        error = 'Phone number is required'
+      } else if (!/^[0-9]{10}$/.test(value)) {
+        error = 'Phone number must be exactly 10 digits'
+      }
+    } else if (name === 'message') {
+      if (!value.trim()) {
+        error = 'Message is required'
+      } else if (value.length < 10) {
+        error = 'Message must be at least 10 characters'
+      } else if (value.length > 1000) {
+        error = 'Message cannot exceed 1000 characters'
+      } else if (hasHtmlOrScript(value)) {
+        error = 'HTML or scripts are not allowed'
+      }
+    }
+    setErrors(prev => ({ ...prev, [name]: error }))
+    return error
+  }
+
+  const validateForm = () => {
+    const e1 = validateField('firstName', formData.firstName)
+    const e2 = validateField('lastName', formData.lastName || '')
+    const e3 = validateField('email', formData.email)
+    const e4 = validateField('phone', formData.phone)
+    const e5 = validateField('message', formData.message)
+    return !(e1 || e2 || e3 || e4 || e5)
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (!validateForm()) {
+      setStatus('error')
+      setErrorMessage('Please fix the validation errors in the form.')
+      return
+    }
+
     setIsSubmitting(true)
     setStatus('idle')
     setErrorMessage(null)
@@ -77,6 +143,7 @@ export default function ContactSection() {
       if (response.success) {
         setStatus('success')
         setFormData({ firstName: '', lastName: '', email: '', phone: '', company: '', service: '', message: '' })
+        setErrors({})
         setTimeout(() => setStatus('idle'), 5000)
       } else {
         setStatus('error')
@@ -188,20 +255,32 @@ export default function ContactSection() {
                       type="text"
                       required
                       placeholder="Your first name"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0072F5] focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all"
+                      className={`w-full bg-slate-50 border ${errors.firstName ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all`}
                       value={formData.firstName}
-                      onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, firstName: e.target.value })
+                        validateField('firstName', e.target.value)
+                      }}
                     />
+                    {errors.firstName && (
+                      <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.firstName}</p>
+                    )}
                   </div>
                   <div className="space-y-3">
                     <label className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase ml-1">Last Name</label>
                     <input
                       type="text"
                       placeholder="Your last name (optional)"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0072F5] focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all"
+                      className={`w-full bg-slate-50 border ${errors.lastName ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all`}
                       value={formData.lastName}
-                      onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, lastName: e.target.value })
+                        validateField('lastName', e.target.value)
+                      }}
                     />
+                    {errors.lastName && (
+                      <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.lastName}</p>
+                    )}
                   </div>
                 </div>
 
@@ -212,10 +291,16 @@ export default function ContactSection() {
                       type="email"
                       required
                       placeholder="your.email@example.com"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0072F5] focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all"
+                      className={`w-full bg-slate-50 border ${errors.email ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all`}
                       value={formData.email}
-                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, email: e.target.value })
+                        validateField('email', e.target.value)
+                      }}
                     />
+                    {errors.email && (
+                      <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.email}</p>
+                    )}
                   </div>
                   <div className="space-y-3">
                     <label className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase ml-1">Phone Number (10 Digits)</label>
@@ -223,10 +308,16 @@ export default function ContactSection() {
                       type="tel"
                       required
                       placeholder="10-digit mobile number"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0072F5] focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all"
+                      className={`w-full bg-slate-50 border ${errors.phone ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all`}
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      onChange={(e) => {
+                        setFormData({ ...formData, phone: e.target.value })
+                        validateField('phone', e.target.value)
+                      }}
                     />
+                    {errors.phone && (
+                      <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.phone}</p>
+                    )}
                   </div>
                 </div>
 
@@ -235,10 +326,16 @@ export default function ContactSection() {
                   <textarea
                     required
                     placeholder="Tell us about your project or requirements..."
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-5 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0072F5] focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all min-h-[160px] resize-none"
+                    className={`w-full bg-slate-50 border ${errors.message ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-5 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all min-h-[160px] resize-none`}
                     value={formData.message}
-                    onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                    onChange={(e) => {
+                      setFormData({ ...formData, message: e.target.value })
+                      validateField('message', e.target.value)
+                    }}
                   />
+                  {errors.message && (
+                    <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.message}</p>
+                  )}
                 </div>
 
                 {/* Math Puzzle Check */}
