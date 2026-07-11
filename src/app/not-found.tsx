@@ -1,20 +1,53 @@
 import Link from 'next/link'
-import { Button } from '@/components/ui/button'
+import { Arvo } from 'next/font/google'
+import notFound from 'public/404_not-found-gif.gif'
+
+const arvo = Arvo({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  display: 'swap',
+})
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-screen flex-col items-center justify-center">
-      <div className="text-center space-y-4">
-        <h1 className="text-6xl font-bold text-gray-900">404</h1>
-        <h2 className="text-2xl font-semibold text-gray-700">Page Not Found</h2>
-        <p className="text-gray-600">
-          The page you are looking for does not exist.
-        </p>
-        <Button asChild className="mt-4">
-          <Link href="/">Go back home</Link>
-        </Button>
+    <section className={`${arvo.className} py-10 bg-white min-h-[85vh] flex items-center justify-center text-neutral-800`}>
+      <div className="container mx-auto px-4">
+        <div className="max-w-2xl mx-auto text-center">
+          
+          {/* Background image container for 404 */}
+          <div 
+            className="h-[400px] bg-center bg-no-repeat flex items-start justify-center"
+            style={{
+              backgroundImage: `url(${notFound.src})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center'
+            }}
+          >
+            <h1 className="text-center text-[80px] font-bold text-neutral-800 mt-5">
+              404
+            </h1>
+          </div>
+          
+          {/* Content box overlapping the background */}
+          <div className="-mt-12 md:-mt-16 space-y-4">
+            <h3 className="text-3xl md:text-4xl font-bold">
+              Look like you're lost
+            </h3>
+            
+            <p className="text-neutral-500 font-light text-base md:text-lg">
+              the page you are looking for not available!
+            </p>
+            
+            <Link 
+              href="/" 
+              className="inline-block bg-[#39ac31] text-white font-bold uppercase tracking-wider text-sm px-6 py-3 rounded-md hover:bg-[#2e8a27] active:scale-[0.98] transition-all shadow-md hover:shadow-lg"
+            >
+              Go to Home
+            </Link>
+          </div>
+
+        </div>
       </div>
-    </div>
+    </section>
   )
 }
-

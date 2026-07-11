@@ -67,7 +67,7 @@ const Hero = () => {
                             We Build <br className="hidden sm:inline" />
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2B1E77] to-[#0072F5]">
                                 High-Performance
-                            </span> <br />
+                            </span> <br className="hidden sm:inline" />
                             Digital Systems That <br className="hidden sm:inline" />
                             Drive Real Business Growth
                         </motion.h1>
@@ -84,23 +84,23 @@ const Hero = () => {
 
                         {/* Interactive Buttons */}
                         <motion.div 
-                            className="flex flex-wrap items-center gap-6 pt-4"
+                            className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6 pt-4"
                             initial={{ opacity: 0, y: 15 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.4 }}
                         >
                             {/* Blue/Indigo Gradient Button "Get a Free Consultation" */}
-                            <Link href="/contact" className="group flex items-center bg-gradient-to-r from-[#2B1E77] to-[#0072F5] hover:opacity-95 text-white font-bold uppercase tracking-wider text-xs sm:text-sm px-6 py-3.5 rounded-full transition-all duration-300 transform hover:scale-[1.03] active:scale-[0.98] shadow-md hover:shadow-lg">
+                            <Link href="/contact" className="group flex items-center justify-center bg-gradient-to-r from-[#2B1E77] to-[#0072F5] hover:opacity-95 text-white font-bold uppercase tracking-wider text-xs sm:text-sm px-6 py-3.5 rounded-full transition-all duration-300 transform hover:scale-[1.03] active:scale-[0.98] shadow-md hover:shadow-lg w-full sm:w-auto">
                                 Get a Free Consultation
-                                <span className="ml-3 w-7 h-7 rounded-full bg-white text-[#2B1E77] flex items-center justify-center group-hover:translate-x-1 transition-transform">
+                                <span className="ml-3 w-7 h-7 rounded-full bg-white text-[#2B1E77] flex items-center justify-center group-hover:translate-x-1 transition-transform shrink-0">
                                     <ArrowRight className="w-4 h-4 stroke-[2.5]" />
                                 </span>
                             </Link>
 
                             {/* View Our Portfolio Outlined Button */}
-                            <Link href="/portfolio" className="group flex items-center text-neutral-900 hover:text-[#0072F5] font-bold uppercase tracking-wider text-xs sm:text-sm transition-colors duration-300">
+                            <Link href="/portfolio" className="group flex items-center justify-center text-neutral-900 hover:text-[#0072F5] font-bold uppercase tracking-wider text-xs sm:text-sm transition-colors duration-300 w-full sm:w-auto py-3.5 sm:py-0 border border-neutral-200 sm:border-0 rounded-full sm:rounded-none">
                                 Explore Our Work
-                                <span className="ml-3 w-8 h-8 rounded-full border border-neutral-300 group-hover:border-[#0072F5] flex items-center justify-center transition-all group-hover:translate-x-1">
+                                <span className="ml-3 w-8 h-8 rounded-full border border-neutral-300 group-hover:border-[#0072F5] flex items-center justify-center transition-all group-hover:translate-x-1 shrink-0">
                                     <ArrowRight className="w-4 h-4 stroke-[1.5]" />
                                 </span>
                             </Link>
@@ -110,23 +110,23 @@ const Hero = () => {
                     {/* Right Column Content - Interactive Widget */}
                     <div className="lg:col-span-5 relative z-10 flex justify-center lg:justify-end">
                         <motion.div 
-                            className="relative flex flex-col items-center justify-center w-full max-w-[380px] h-[420px]"
+                            className="relative flex flex-col items-center justify-center w-full max-w-[340px] sm:max-w-[380px] h-[360px] sm:h-[420px]"
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             transition={{ duration: 0.8, delay: 0.3 }}
                         >
                             {/* Ambient light glow behind the widget */}
-                            <div className="absolute w-[280px] h-[280px] rounded-full bg-gradient-to-tr from-violet-200/20 to-blue-300/10 blur-[60px] pointer-events-none -z-10" />
+                            <div className="absolute w-[240px] sm:w-[280px] h-[240px] sm:h-[280px] rounded-full bg-gradient-to-tr from-violet-200/20 to-blue-300/10 blur-[50px] sm:blur-[60px] pointer-events-none -z-10" />
 
                             {/* Main Performance Card */}
                             <motion.div 
-                                className="w-[300px] bg-white/90 backdrop-blur-md border border-neutral-200/80 p-6 rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-300 z-10"
+                                className="w-[280px] sm:w-[300px] bg-white/90 backdrop-blur-md border border-neutral-200/80 p-5 sm:p-6 rounded-2xl sm:rounded-3xl shadow-xl hover:shadow-2xl transition-shadow duration-300 z-10"
                                 whileHover={{ y: -5 }}
                                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
                             >
                                 <div className="flex items-center justify-between mb-4">
-                                    <span className="text-[10px] font-mono uppercase tracking-wider text-neutral-400">Core Web Vitals</span>
-                                    <span className="flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600 text-[10px] font-semibold">
+                                    <span className="text-[9px] sm:text-[10px] font-mono uppercase tracking-wider text-neutral-400">Core Web Vitals</span>
+                                    <span className="flex items-center gap-1.5 px-2 sm:px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-600 text-[9px] sm:text-[10px] font-semibold">
                                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
                                         Live
                                     </span>
@@ -135,7 +135,7 @@ const Hero = () => {
                                     <div>
                                         <div className="flex justify-between items-end mb-1">
                                             <span className="text-xs font-semibold text-neutral-700">Page Speed Index</span>
-                                            <span className="text-xl font-black text-neutral-900">99<span className="text-[10px] font-normal text-neutral-400">/100</span></span>
+                                            <span className="text-lg sm:text-xl font-black text-neutral-900">99<span className="text-[9px] sm:text-[10px] font-normal text-neutral-400">/100</span></span>
                                         </div>
                                         <div className="w-full bg-neutral-100 h-2 rounded-full overflow-hidden">
                                             <motion.div 
@@ -149,7 +149,7 @@ const Hero = () => {
                                     <div>
                                         <div className="flex justify-between items-end mb-1">
                                             <span className="text-xs font-semibold text-neutral-700">SEO Visibility</span>
-                                            <span className="text-xl font-black text-neutral-900">100%</span>
+                                            <span className="text-lg sm:text-xl font-black text-neutral-900">100%</span>
                                         </div>
                                         <div className="w-full bg-neutral-100 h-2 rounded-full overflow-hidden">
                                             <motion.div 
@@ -165,27 +165,27 @@ const Hero = () => {
 
                             {/* Floating Widget 2: Business Growth / Conversion */}
                             <motion.div 
-                                className="absolute right-0 top-10 w-[160px] bg-white/95 backdrop-blur-md border border-neutral-200/80 p-4 rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 z-20"
+                                className="absolute -right-2 sm:right-0 top-12 sm:top-10 w-[130px] sm:w-[160px] bg-white/95 backdrop-blur-md border border-neutral-200/80 p-3 sm:p-4 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 z-20"
                                 animate={{ y: [0, -8, 0] }}
                                 transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                                 whileHover={{ scale: 1.05 }}
                             >
-                                <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-widest block mb-0.5">Conversion Rate</span>
-                                <span className="text-lg font-bold text-neutral-900">+14.8%</span>
-                                <span className="text-[9px] text-neutral-400 block mt-0.5">v.s. last month</span>
+                                <span className="text-[8px] sm:text-[9px] font-mono text-neutral-400 uppercase tracking-widest block mb-0.5">Conversion Rate</span>
+                                <span className="text-base sm:text-lg font-bold text-neutral-900">+14.8%</span>
+                                <span className="text-[8px] sm:text-[9px] text-neutral-400 block mt-0.5">v.s. last month</span>
                             </motion.div>
 
                             {/* Floating Widget 3: Tech Stack / Tags */}
                             <motion.div 
-                                className="absolute left-0 bottom-8 bg-white/95 backdrop-blur-md border border-neutral-200/80 p-4 rounded-2xl shadow-lg z-20"
+                                className="absolute -left-2 sm:left-0 bottom-12 sm:bottom-8 bg-white/95 backdrop-blur-md border border-neutral-200/80 p-3 sm:p-4 rounded-xl sm:rounded-2xl shadow-lg z-20"
                                 animate={{ y: [0, 8, 0] }}
                                 transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
                                 whileHover={{ scale: 1.05 }}
                             >
-                                <span className="text-[9px] font-mono text-neutral-400 uppercase tracking-widest block mb-2">Our Stack</span>
-                                <div className="flex flex-wrap gap-1 max-w-[130px]">
+                                <span className="text-[8px] sm:text-[9px] font-mono text-neutral-400 uppercase tracking-widest block mb-2">Our Stack</span>
+                                <div className="flex flex-wrap gap-1 max-w-[110px] sm:max-w-[130px]">
                                     {['Next.js', 'UI/UX', 'SEO', 'React'].map((tag) => (
-                                        <span key={tag} className="text-[8px] font-medium bg-neutral-50 border border-neutral-200 text-neutral-600 px-1.5 py-0.5 rounded-full">
+                                        <span key={tag} className="text-[7px] sm:text-[8px] font-medium bg-neutral-50 border border-neutral-200 text-neutral-600 px-1 sm:px-1.5 py-0.5 rounded-full">
                                             {tag}
                                         </span>
                                     ))}

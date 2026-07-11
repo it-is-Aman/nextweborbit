@@ -20,11 +20,12 @@ const menuItems = [
     {
         name: 'Services',
         children: [
-            { name: 'Application Development', href: '/application-development' },
-            { name: 'Seo Packages', href: '/seo-packages' },
-            { name: 'Software Development', href: '/software-development' },
             { name: 'Website Development', href: '/website-development' },
-            { name: 'Digital Marketing', href: '/digital-marketing' }
+            { name: 'Application Development', href: '/application-development' },
+            { name: 'Software Development', href: '/software-development' },
+            { name: 'Digital Marketing', href: '/digital-marketing' },
+            { name: 'UI/UX Design', href: '/ui-ux-design' },
+            { name: 'Seo Packages', href: '/seo-packages' },
         ]
     },
     { name: 'Career', href: '/career' },

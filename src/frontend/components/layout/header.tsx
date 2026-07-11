@@ -11,28 +11,22 @@ import CurvedMenu from '@/components/layout/curved-menu'
 
 const services = [
   {
+    title: 'Website Development',
+    href: '/website-development',
+    video: '/videos/3130182-uhd_3840_2160_30fps.mp4',
+    desc: 'Modern, responsive, and performance-driven web design.'
+  },
+  {
     title: 'Application Development',
     href: '/application-development',
     video: '/videos/3129540-uhd_3840_2160_30fps.mp4',
     desc: 'Custom mobile and web app solutions built to scale your business.'
   },
   {
-    title: 'Seo Packages',
-    href: '/seo-packages',
-    video: '/videos/3129576-uhd_3840_2160_30fps.mp4',
-    desc: 'Boost your visibility and rank higher with our proven SEO strategies.'
-  },
-  {
     title: 'Software Development',
     href: '/software-development',
     video: '/videos/3129957-uhd_3840_2160_25fps.mp4',
     desc: 'Tailored software solutions for enterprises and startups alike.'
-  },
-  {
-    title: 'Website Development',
-    href: '/website-development',
-    video: '/videos/3130182-uhd_3840_2160_30fps.mp4',
-    desc: 'Modern, responsive, and performance-driven web design.'
   },
   {
     title: 'Digital Marketing',
@@ -45,6 +39,12 @@ const services = [
     href: '/ui-ux-design',
     video: '/videos/3141208-uhd_3840_2160_25fps.mp4',
     desc: 'Crafting intuitive and engaging user experiences.'
+  },
+  {
+    title: 'Seo Packages',
+    href: '/seo-packages',
+    video: '/videos/3129576-uhd_3840_2160_30fps.mp4',
+    desc: 'Boost your visibility and rank higher with our proven SEO strategies.'
   },
 ]
 
