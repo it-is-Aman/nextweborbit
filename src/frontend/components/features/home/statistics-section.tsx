@@ -56,7 +56,7 @@ export default function StatisticsSection() {
                                 <span className="text-5xl sm:text-6xl font-black font-mono tracking-tighter leading-none text-neutral-900">
                                     {animatedNumbers.projects}+
                                 </span>
-                                <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)] mt-2" />
+                                <span className="w-2.5 h-2.5 rounded-full bg-[#0072F5] shadow-[0_0_8px_rgba(0,114,245,0.6)] mt-2" />
                             </div>
                             <span className="text-neutral-500 font-bold uppercase tracking-wider text-xs sm:text-sm mt-6">
                                 Finished Projects
@@ -69,7 +69,7 @@ export default function StatisticsSection() {
                                 <span className="text-5xl sm:text-6xl font-black font-mono tracking-tighter leading-none text-neutral-900">
                                     {animatedNumbers.team}+
                                 </span>
-                                <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)] mt-2" />
+                                <span className="w-2.5 h-2.5 rounded-full bg-[#0072F5] shadow-[0_0_8px_rgba(0,114,245,0.6)] mt-2" />
                             </div>
                             <span className="text-neutral-500 font-bold uppercase tracking-wider text-xs sm:text-sm mt-6">
                                 Team Members
@@ -82,7 +82,7 @@ export default function StatisticsSection() {
                                 <span className="text-5xl sm:text-6xl font-black font-mono tracking-tighter leading-none text-neutral-900">
                                     {animatedNumbers.customers}+
                                 </span>
-                                <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)] mt-2" />
+                                <span className="w-2.5 h-2.5 rounded-full bg-[#0072F5] shadow-[0_0_8px_rgba(0,114,245,0.6)] mt-2" />
                             </div>
                             <span className="text-neutral-500 font-bold uppercase tracking-wider text-xs sm:text-sm mt-6">
                                 Happy Customers
@@ -104,7 +104,7 @@ export default function StatisticsSection() {
                                 <span className="text-5xl sm:text-6xl font-black font-mono tracking-tighter leading-none text-neutral-900">
                                     {animatedNumbers.partners}+
                                 </span>
-                                <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)] mt-2" />
+                                <span className="w-2.5 h-2.5 rounded-full bg-[#0072F5] shadow-[0_0_8px_rgba(0,114,245,0.6)] mt-2" />
                             </div>
                             <span className="text-neutral-500 font-bold uppercase tracking-wider text-xs sm:text-sm mt-6">
                                 Loyal Partners
@@ -117,7 +117,7 @@ export default function StatisticsSection() {
                                 <span className="text-5xl sm:text-6xl font-black font-mono tracking-tighter leading-none text-neutral-900">
                                     {animatedNumbers.coffee.toLocaleString()}+
                                 </span>
-                                <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.6)] mt-2" />
+                                <span className="w-2.5 h-2.5 rounded-full bg-[#0072F5] shadow-[0_0_8px_rgba(0,114,245,0.6)] mt-2" />
                             </div>
                             <span className="text-neutral-500 font-bold uppercase tracking-wider text-xs sm:text-sm mt-6">
                                 Coffee Drinked
@@ -125,18 +125,18 @@ export default function StatisticsSection() {
                         </div>
 
                         {/* Contact Block (Orange gradient solid block) */}
-                        <Link href="/contact" className="group p-10 flex flex-col justify-between min-h-[220px] relative bg-gradient-to-br from-[#FF9F00] via-[#E08C00] to-orange-600 hover:opacity-95 transition-opacity duration-300 overflow-hidden cursor-pointer select-none">
+                        <Link href="/contact" className="group p-10 flex flex-col justify-between min-h-[220px] relative bg-gradient-to-br from-[#2B1E77] via-[#19114d] to-[#0072F5] hover:opacity-95 transition-opacity duration-300 overflow-hidden cursor-pointer select-none">
                             <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
                             <div className="flex items-start justify-between relative z-10">
                                 <div className="flex flex-col">
-                                    <span className="text-2xl font-black uppercase tracking-wider text-black">
+                                    <span className="text-2xl font-black uppercase tracking-wider text-white">
                                         CONTACT
                                     </span>
-                                    <span className="text-black/85 font-bold tracking-wide text-xs sm:text-sm mt-2">
+                                    <span className="text-white/80 font-bold tracking-wide text-xs sm:text-sm mt-2">
                                         Get A Quote For Your Project
                                     </span>
                                 </div>
-                                <div className="w-12 h-12 rounded-full bg-black/10 flex items-center justify-center text-black border border-black/20 transform group-hover:scale-105 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all">
+                                <div className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-white border border-white/20 transform group-hover:scale-105 group-hover:translate-x-1 group-hover:-translate-y-1 transition-all">
                                     <Send className="w-5 h-5 fill-current stroke-0" />
                                 </div>
                             </div>

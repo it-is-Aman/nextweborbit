@@ -101,7 +101,7 @@ const Footer = () => {
             <div className="flex items-center gap-4">
               <div className="shrink-0">
                 <Image
-                  src="/images/logo-1.png"
+                  src="/images/logo-2.png"
                   alt="NextWebOrbit Logo"
                   width={80}
                   height={80}

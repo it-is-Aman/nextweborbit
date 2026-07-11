@@ -45,7 +45,7 @@ const WhyChooseUsSection = () => {
             </p>
           </div>
           <Link href="/contact" className="inline-block">
-            <button className="px-10 py-5 bg-[#003B2A] text-white rounded-full font-bold hover:bg-[#002B20] transition-all hover:scale-105 active:scale-95 shadow-xl shadow-[#003B2A]/10 whitespace-nowrap">
+            <button className="px-10 py-5 bg-gradient-to-r from-[#2B1E77] to-[#0072F5] hover:opacity-95 text-white rounded-full font-bold transition-all hover:scale-105 active:scale-95 shadow-xl shadow-[#2B1E77]/20 whitespace-nowrap">
               Start Your Project
             </button>
           </Link>
@@ -56,10 +56,10 @@ const WhyChooseUsSection = () => {
           {features.map((feature, index) => {
             // Define colors based on index with a smoother opacity-like gradient and glow effect
             const colors = [
-              { bg: 'bg-[#003B2A]', text: 'text-white', icon: 'text-white', desc: 'text-white/80', shadow: 'shadow-[#003B2A]/40 hover:shadow-[#003B2A]/60' }, // 100% Intensity - Deep/Vibrant
-              { bg: 'bg-[#155D48]', text: 'text-white', icon: 'text-white', desc: 'text-white/80', shadow: 'shadow-[#155D48]/40 hover:shadow-[#155D48]/60' }, // ~75% Intensity - Rich Green
-              { bg: 'bg-[#2F8068]', text: 'text-white', icon: 'text-white', desc: 'text-white/80', shadow: 'shadow-[#2F8068]/40 hover:shadow-[#2F8068]/60' }, // ~50% Intensity - Soft Teal/Green
-              { bg: 'bg-[#E3F2EF]', text: 'text-[#003B2A]', icon: 'text-[#003B2A]', desc: 'text-[#003B2A]/70', shadow: 'shadow-[#2F8068]/10 hover:shadow-[#2F8068]/20' } // Lightest - More visible Mint
+              { bg: 'bg-[#2B1E77]', text: 'text-white', icon: 'text-white', desc: 'text-white/80', shadow: 'shadow-[#2B1E77]/40 hover:shadow-[#2B1E77]/60' }, // 100% Intensity - Deep/Vibrant Indigo
+              { bg: 'bg-[#0072F5]', text: 'text-white', icon: 'text-white', desc: 'text-white/80', shadow: 'shadow-[#0072F5]/40 hover:shadow-[#0072F5]/60' }, // ~75% Intensity - Bright Blue
+              { bg: 'bg-[#3B82F6]', text: 'text-white', icon: 'text-white', desc: 'text-white/80', shadow: 'shadow-[#3B82F6]/40 hover:shadow-[#3B82F6]/60' }, // ~50% Intensity - Soft Blue
+              { bg: 'bg-[#E6F2FF]', text: 'text-[#2B1E77]', icon: 'text-[#2B1E77]', desc: 'text-[#2B1E77]/70', shadow: 'shadow-[#3B82F6]/10 hover:shadow-[#3B82F6]/20' } // Lightest - Ice Blue
             ][index] || { bg: 'bg-gray-50', text: 'text-gray-900', icon: 'text-primary', desc: 'text-gray-500', shadow: 'shadow-gray-100' }
 
             return (

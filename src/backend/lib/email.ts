@@ -1,3 +1,4 @@
+import tls from 'tls'
 import { Resend } from 'resend'
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null
@@ -9,28 +10,114 @@ export interface SendEmailOptions {
   from?: string
 }
 
-export async function sendEmail({ to, subject, html, from }: SendEmailOptions) {
-  if (!process.env.RESEND_API_KEY) {
-    console.warn('Email sending skipped: No RESEND_API_KEY configured');
-    return { success: true, data: null };
+async function sendSmtpSsl(to: string | string[], subject: string, html: string): Promise<void> {
+  const host = process.env.SMTP_HOST
+  const port = parseInt(process.env.SMTP_PORT || '465')
+  const user = process.env.SMTP_USER
+  const pass = process.env.SMTP_PASS
+
+  if (!host || !user || !pass) {
+    throw new Error('SMTP credentials not configured in environment')
   }
 
-  try {
-    if (!resend) {
-      throw new Error('Resend client not initialized');
-    }
-    const data = await resend.emails.send({
-      from: from || process.env.NEXT_PUBLIC_FROM_EMAIL || 'Next Web Orbit <noreply@nextweborbit.in>',
-      to,
-      subject,
-      html,
+  const recipients = Array.isArray(to) ? to : [to]
+
+  for (const recipient of recipients) {
+    await new Promise<void>((resolve, reject) => {
+      const socket = tls.connect({ host, port, rejectUnauthorized: false }, () => {
+        // Connection established
+      })
+
+      let step = 0
+      const send = (data: string) => {
+        socket.write(data + '\r\n')
+      }
+
+      socket.on('data', (chunk) => {
+        const response = chunk.toString()
+        
+        if (response.startsWith('4') || response.startsWith('5')) {
+          socket.end()
+          return reject(new Error(`SMTP Server Error: ${response}`))
+        }
+
+        if (step === 0) {
+          send(`EHLO ${host}`)
+          step++
+        } else if (step === 1) {
+          send('AUTH LOGIN')
+          step++
+        } else if (step === 2) {
+          send(Buffer.from(user).toString('base64'))
+          step++
+        } else if (step === 3) {
+          send(Buffer.from(pass).toString('base64'))
+          step++
+        } else if (step === 4) {
+          send(`MAIL FROM:<${user}>`)
+          step++
+        } else if (step === 5) {
+          send(`RCPT TO:<${recipient}>`)
+          step++
+        } else if (step === 6) {
+          send('DATA')
+          step++
+        } else if (step === 7) {
+          const message = [
+            `From: ${user}`,
+            `To: ${recipient}`,
+            `Subject: ${subject}`,
+            'MIME-Version: 1.0',
+            'Content-Type: text/html; charset=utf-8',
+            '',
+            html,
+            '.'
+          ].join('\r\n')
+          send(message)
+          step++
+        } else if (step === 8) {
+          send('QUIT')
+          socket.end()
+          resolve()
+        }
+      })
+
+      socket.on('error', (err) => {
+        reject(err)
+      })
     })
-
-    return { success: true, data }
-  } catch (error) {
-    console.error('Email sending failed:', error)
-    return { success: false, error }
   }
+}
+
+export async function sendEmail({ to, subject, html, from }: SendEmailOptions) {
+  // 1. Try SMTP if configured
+  if (process.env.SMTP_HOST) {
+    try {
+      await sendSmtpSsl(to, subject, html)
+      return { success: true, data: 'SMTP' }
+    } catch (error) {
+      console.error('SMTP Email sending failed, falling back to Resend:', error)
+    }
+  }
+
+  // 2. Try Resend if configured
+  if (process.env.RESEND_API_KEY && resend) {
+    try {
+      const data = await resend.emails.send({
+        from: from || process.env.NEXT_PUBLIC_FROM_EMAIL || 'Next Web Orbit <noreply@nextweborbit.in>',
+        to,
+        subject,
+        html,
+      })
+      return { success: true, data }
+    } catch (error) {
+      console.error('Resend Email sending failed:', error)
+      return { success: false, error }
+    }
+  }
+
+  console.warn('Email sending skipped: Neither SMTP nor RESEND_API_KEY is configured')
+  return { success: true, data: null }
 }
 
 // Newsletter Welcome Email

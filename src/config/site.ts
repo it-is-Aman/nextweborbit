@@ -22,8 +22,8 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   icons: {
-    icon: '/uploads/logo-1765640552599-591203543.png',
-    apple: '/uploads/logo-1765640552599-591203543.png',
+    icon: '/images/logo-1.png',
+    apple: '/images/logo-1.png',
   },
   keywords: [
     'IT Services',

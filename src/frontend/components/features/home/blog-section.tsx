@@ -28,22 +28,22 @@ export default function BlogSection() {
                     {/* Left Column - Header and Large Action Badge */}
                     <div className="lg:col-span-5 flex flex-col space-y-8">
                         <div>
-                            {/* Slanted/cursive-looking orange subtitle */}
-                            <span className="text-xl font-bold italic tracking-wide text-[#FF9F00] block mb-2 font-serif">
+                            {/* Slanted/cursive-looking blue subtitle */}
+                            <span className="text-xl font-bold italic tracking-wide text-[#0072F5] block mb-2 font-serif">
                                 My Blogs
                             </span>
-                            <div className="w-16 h-[2px] bg-[#FF9F00] mb-4" />
+                            <div className="w-16 h-[2px] bg-[#0072F5] mb-4" />
                             
                             <h2 className="text-4xl sm:text-5xl md:text-6xl font-black uppercase tracking-tight leading-[0.9] text-neutral-900">
                                 Recent Posts
                             </h2>
                         </div>
 
-                        {/* Large Orange Circle "Explore Portfolio" Badge */}
+                        {/* Large Blue Circle "Explore Portfolio" Badge */}
                         <div className="pt-6">
-                            <Link href="/portfolio" className="group inline-flex flex-col items-center justify-center w-40 h-40 rounded-full bg-[#FF9F00] hover:bg-[#e08c00] text-black font-bold uppercase tracking-wider text-center p-4 transition-all duration-500 transform hover:scale-105 hover:rotate-3 shadow-lg hover:shadow-xl shadow-amber-500/10">
-                                <span className="w-10 h-10 rounded-full bg-black/10 flex items-center justify-center mb-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">
-                                    <ArrowRight className="w-6 h-6 text-black stroke-[2.5]" />
+                            <Link href="/portfolio" className="group inline-flex flex-col items-center justify-center w-40 h-40 rounded-full bg-[#0072F5] hover:bg-[#005BC5] text-white font-bold uppercase tracking-wider text-center p-4 transition-all duration-500 transform hover:scale-105 hover:rotate-3 shadow-lg hover:shadow-xl shadow-blue-500/10">
+                                <span className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center mb-2 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform">
+                                    <ArrowRight className="w-6 h-6 text-white stroke-[2.5]" />
                                 </span>
                                 <span className="text-xs font-black tracking-widest leading-tight">
                                     Explore <br /> Our Work
@@ -72,14 +72,14 @@ export default function BlogSection() {
                                             </span>
                                         </div>
                                         {/* Post Title */}
-                                        <h3 className="text-xl sm:text-2xl font-black uppercase text-neutral-800 leading-tight tracking-tight group-hover:text-[#FF9F00] transition-colors duration-300">
+                                        <h3 className="text-xl sm:text-2xl font-black uppercase text-neutral-800 leading-tight tracking-tight group-hover:text-[#0072F5] transition-colors duration-300">
                                             {post.title}
                                         </h3>
                                     </div>
 
                                     {/* Action Eye Icon */}
-                                    <div className="w-12 h-12 rounded-full border border-neutral-200 group-hover:border-[#FF9F00] flex items-center justify-center flex-shrink-0 transition-colors duration-300 bg-white shadow-sm">
-                                        <Eye className="w-5 h-5 text-neutral-400 group-hover:text-[#FF9F00] transition-colors duration-300" />
+                                    <div className="w-12 h-12 rounded-full border border-neutral-200 group-hover:border-[#0072F5] flex items-center justify-center flex-shrink-0 transition-colors duration-300 bg-white shadow-sm">
+                                        <Eye className="w-5 h-5 text-neutral-400 group-hover:text-[#0072F5] transition-colors duration-300" />
                                     </div>
                                 </Link>
                             </motion.div>

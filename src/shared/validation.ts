@@ -7,15 +7,22 @@ export const newsletterSchema = z.object({
 
 export type NewsletterInput = z.infer<typeof newsletterSchema>
 
+const noHtmlOrScript = (val: string | undefined) => {
+    if (!val) return true;
+    const hasHtml = /<[^>]*>/g.test(val);
+    const hasScript = /(javascript:|onload=|onerror=|script)/gi.test(val);
+    return !hasHtml && !hasScript;
+};
+
 // Contact Form Validation
 export const contactSchema = z.object({
-    firstName: z.string().min(1, 'First name is required').max(50),
-    lastName: z.string().max(50).optional(),
+    firstName: z.string().min(1, 'First name is required').max(50).refine(noHtmlOrScript, 'HTML or scripts are not allowed'),
+    lastName: z.string().max(50).optional().refine(noHtmlOrScript, 'HTML or scripts are not allowed'),
     email: z.string().email('Invalid email address'),
-    phone: z.string().max(20).optional(),
-    company: z.string().max(100).optional(),
-    service: z.string().max(100).optional(),
-    message: z.string().min(10, 'Message must be at least 10 characters').max(1000),
+    phone: z.string().regex(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits'),
+    company: z.string().max(100).optional().refine(noHtmlOrScript, 'HTML or scripts are not allowed'),
+    service: z.string().max(100).optional().refine(noHtmlOrScript, 'HTML or scripts are not allowed'),
+    message: z.string().min(10, 'Message must be at least 10 characters').max(1000).refine(noHtmlOrScript, 'HTML or scripts are not allowed'),
 })
 
 export type ContactInput = z.infer<typeof contactSchema>

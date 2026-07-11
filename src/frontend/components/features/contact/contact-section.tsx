@@ -47,11 +47,30 @@ export default function ContactSection() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [activeMaps, setActiveMaps] = useState<{ [key: string]: boolean }>({})
 
+  const [puzzle, setPuzzle] = useState({ num1: 11, num2: 4, sum: 15 })
+  const [userAnswer, setUserAnswer] = useState('')
+  const [puzzleError, setPuzzleError] = useState(false)
+
+  useEffect(() => {
+    const n1 = Math.floor(Math.random() * 10) + 1
+    const n2 = Math.floor(Math.random() * 10) + 1
+    setPuzzle({ num1: n1, num2: n2, sum: n1 + n2 })
+  }, [])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsSubmitting(true)
     setStatus('idle')
     setErrorMessage(null)
+
+    if (parseInt(userAnswer) !== puzzle.sum) {
+      setPuzzleError(true)
+      setStatus('error')
+      setErrorMessage('Incorrect answer to security question.')
+      setIsSubmitting(false)
+      return
+    }
+    setPuzzleError(false)
 
     try {
       const response = await api.post<ApiResponse<ContactFormResponse>>('/api/contact', formData as ContactFormRequest)
@@ -89,27 +108,27 @@ export default function ContactSection() {
           <div className="space-y-16">
             <div className="space-y-6">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary/5 border border-primary/10">
-                <div className="w-1.5 h-1.5 rounded-full bg-primary animate-pulse" />
-                <span className="text-[10px] font-black tracking-[0.2em] uppercase text-primary">Status: Systems Online</span>
+                <div className="w-1.5 h-1.5 rounded-full bg-[#0072F5] animate-pulse" />
+                <span className="text-[10px] font-black tracking-[0.2em] uppercase text-[#0072F5]">Available for Projects</span>
               </div>
               <h2 className="text-[clamp(3.2rem,8vw,5.5rem)] font-black tracking-tighter leading-[0.9] uppercase text-slate-950">
-                <BlurReveal>Connect</BlurReveal>
-                <div className="text-slate-200"><BlurReveal delay={0.2}>Commander</BlurReveal></div>
+                <BlurReveal>Get in</BlurReveal>
+                <div className="text-[#0072F5]"><BlurReveal delay={0.2}>Touch</BlurReveal></div>
               </h2>
               <p className="text-lg text-slate-500 max-w-lg font-medium leading-relaxed">
-                Initiate protocols for digital expansion. Our technical consultants are standing by for deployment instructions.
+                Have a project in mind or need technical support? Contact us today to discuss how we can help your business grow.
               </p>
             </div>
 
             <div className="space-y-12">
               <div className="space-y-6">
-                <span className="text-[11px] font-black tracking-[0.4em] text-slate-400 uppercase block">Global Headquarters</span>
+                <span className="text-[11px] font-black tracking-[0.4em] text-slate-400 uppercase block">Our Noida Office</span>
                 <div className="grid sm:grid-cols-2 gap-8">
                   {CONTACT_INFO_DISPLAY.offices.map((office) => (
                     <div key={office.city} className="group cursor-default">
-                      <div className="p-6 rounded-[2rem] bg-slate-50/50 border border-slate-200 transition-all duration-500 hover:bg-white hover:shadow-xl hover:shadow-slate-200/50 hover:border-primary/30 shadow-sm">
+                      <div className="p-6 rounded-[2rem] bg-slate-50/50 border border-slate-200 transition-all duration-500 hover:bg-white hover:shadow-xl hover:shadow-slate-200/50 hover:border-[#0072F5]/30 shadow-sm">
                         <div className="flex items-center gap-4 mb-3">
-                          <MapPin className="w-5 h-5 text-primary" />
+                          <MapPin className="w-5 h-5 text-[#0072F5]" />
                           <h4 className="font-black text-sm tracking-widest uppercase text-slate-900">{office.city}</h4>
                         </div>
                         <p className="text-xs text-slate-500 leading-relaxed font-bold">{office.address}</p>
@@ -121,8 +140,8 @@ export default function ContactSection() {
 
               <div className="flex flex-wrap gap-12">
                 <div className="space-y-4">
-                  <span className="text-[11px] font-black tracking-[0.4em] text-slate-400 uppercase block">Terminal Link</span>
-                  <a href={`mailto:${CONTACT_INFO_DISPLAY.email}`} className="text-lg font-black tracking-tight text-slate-950 hover:text-primary transition-colors uppercase border-b-2 border-slate-200 hover:border-primary/30 pb-1">
+                  <span className="text-[11px] font-black tracking-[0.4em] text-slate-400 uppercase block">Direct Email</span>
+                  <a href={`mailto:${CONTACT_INFO_DISPLAY.email}`} className="text-lg font-black tracking-tight text-slate-950 hover:text-[#0072F5] transition-colors uppercase border-b-2 border-slate-200 hover:border-[#0072F5]/30 pb-1">
                     {CONTACT_INFO_DISPLAY.email}
                   </a>
                 </div>
@@ -157,29 +176,29 @@ export default function ContactSection() {
               </div>
 
               <div className="mb-12">
-                <h3 className="text-2xl font-black tracking-tight uppercase mb-2 text-slate-950">Consultation Input</h3>
-                <p className="text-[10px] font-black tracking-[0.3em] text-slate-400 uppercase">Data Packet Submission Protocol v4.0</p>
+                <h3 className="text-2xl font-black tracking-tight uppercase mb-2 text-slate-950">Send a Message</h3>
+                <p className="text-[10px] font-black tracking-[0.3em] text-slate-400 uppercase">We typically reply within 24 hours</p>
               </div>
 
               <form onSubmit={handleSubmit} className="space-y-8">
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase ml-1">Identity: First</label>
+                    <label className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase ml-1">First Name</label>
                     <input
                       type="text"
                       required
-                      placeholder="ENTER NAME"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/5 transition-all"
+                      placeholder="Your first name"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0072F5] focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all"
                       value={formData.firstName}
                       onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
                     />
                   </div>
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase ml-1">Identity: Last</label>
+                    <label className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase ml-1">Last Name</label>
                     <input
                       type="text"
-                      placeholder="OPTIONAL"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/5 transition-all"
+                      placeholder="Your last name (optional)"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0072F5] focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all"
                       value={formData.lastName}
                       onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
                     />
@@ -188,22 +207,23 @@ export default function ContactSection() {
 
                 <div className="grid md:grid-cols-2 gap-6">
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase ml-1">Transmission Channel (Email)</label>
+                    <label className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase ml-1">Email Address</label>
                     <input
                       type="email"
                       required
-                      placeholder="COMMAND@DOMAIN.COM"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/5 transition-all"
+                      placeholder="your.email@example.com"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0072F5] focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                     />
                   </div>
                   <div className="space-y-3">
-                    <label className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase ml-1">Communication ID (Phone)</label>
+                    <label className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase ml-1">Phone Number (10 Digits)</label>
                     <input
                       type="tel"
-                      placeholder="+X XXX XXX XXXX"
-                      className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/5 transition-all"
+                      required
+                      placeholder="10-digit mobile number"
+                      className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0072F5] focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all"
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                     />
@@ -211,13 +231,31 @@ export default function ContactSection() {
                 </div>
 
                 <div className="space-y-3">
-                  <label className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase ml-1">Strategic Objective (Message)</label>
+                  <label className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase ml-1">Your Message</label>
                   <textarea
                     required
-                    placeholder="DESCRIBE MISSION PARAMETERS..."
-                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-5 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-primary focus:bg-white focus:ring-4 focus:ring-primary/5 transition-all min-h-[160px] resize-none"
+                    placeholder="Tell us about your project or requirements..."
+                    className="w-full bg-slate-50 border border-slate-200 rounded-2xl px-6 py-5 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:border-[#0072F5] focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all min-h-[160px] resize-none"
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                  />
+                </div>
+
+                {/* Math Puzzle Check */}
+                <div className="space-y-3">
+                  <label className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase ml-1">
+                    Security Question: What is {puzzle.num1} + {puzzle.num2}?
+                  </label>
+                  <input
+                    type="number"
+                    required
+                    placeholder="Enter the sum"
+                    className={`w-full bg-slate-50 border ${puzzleError ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all`}
+                    value={userAnswer}
+                    onChange={(e) => {
+                      setUserAnswer(e.target.value)
+                      setPuzzleError(false)
+                    }}
                   />
                 </div>
 
@@ -255,13 +293,13 @@ export default function ContactSection() {
                       className="relative flex-[2] bg-slate-950 text-white px-8 py-5 rounded-2xl font-black text-xs tracking-[0.3em] uppercase group overflow-hidden transition-all active:scale-[0.98] disabled:opacity-50"
                     >
                       <span className="relative z-10 flex items-center justify-center gap-3">
-                        {isSubmitting ? 'PROCESSING...' : (
+                        {isSubmitting ? 'SENDING...' : (
                           <>
-                            Initiate Broadcast <Send className="w-3.5 h-3.5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                            Send Message <Send className="w-3.5 h-3.5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
                           </>
                         )}
                       </span>
-                      <div className="absolute inset-0 bg-primary translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                      <div className="absolute inset-0 bg-[#0072F5] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                     </button>
                   </Magnetic>
                   <Magnetic>
@@ -280,12 +318,12 @@ export default function ContactSection() {
           </div>
         </div>
 
-        {/* Global Surveillance (Map View) */}
+        {/* Global Presence Map (Map View) */}
         <div className="mt-32 space-y-12">
           <div className="flex items-end justify-between border-b border-slate-200 pb-8">
             <div className="space-y-4">
-              <span className="text-[11px] font-black tracking-[0.4em] text-slate-400 uppercase block">Spatial Coordinates</span>
-              <h3 className="text-4xl font-black tracking-tight uppercase text-slate-950">Presence Mapping</h3>
+              <span className="text-[11px] font-black tracking-[0.4em] text-slate-400 uppercase block">Office Location</span>
+              <h3 className="text-4xl font-black tracking-tight uppercase text-slate-950">Find Us on the Map</h3>
             </div>
             <div className="hidden md:flex gap-4">
               <div className="flex gap-1 h-3">
@@ -299,15 +337,15 @@ export default function ContactSection() {
           <div className="grid md:grid-cols-2 gap-10">
             {CONTACT_INFO_DISPLAY.offices.map((office, idx) => (
               <div key={idx} className="group relative">
-                <div className="absolute -inset-[1px] bg-gradient-to-br from-primary/20 to-transparent rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-[2px]" />
-                <div className="relative bg-white border border-slate-200 rounded-[2.5rem] overflow-hidden shadow-[0_20px_50px_-15px_rgba(0,0,0,0.1)] transition-shadow duration-500 hover:shadow-2xl hover:shadow-primary/5">
+                <div className="absolute -inset-[1px] bg-gradient-to-br from-[#0072F5]/20 to-transparent rounded-[2.5rem] opacity-0 group-hover:opacity-100 transition-opacity duration-700 blur-[2px]" />
+                <div className="relative bg-white border border-slate-200 rounded-[2.5rem] overflow-hidden shadow-[0_20px_50px_-15px_rgba(0,0,0,0.1)] transition-shadow duration-500 hover:shadow-2xl hover:shadow-[#0072F5]/5">
                   <div className="p-8 border-b border-slate-200 flex items-center justify-between bg-slate-50">
                     <div>
                       <h4 className="text-2xl font-black tracking-tight uppercase text-slate-950">{office.city}</h4>
-                      <p className="text-[9px] font-black tracking-[0.3em] text-primary/70 uppercase mt-1">Surveillance Active</p>
+                      <p className="text-[9px] font-black tracking-[0.3em] text-[#0072F5]/70 uppercase mt-1">Office Location</p>
                     </div>
                     <Magnetic>
-                      <a href={office.mapUrl} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-xl bg-slate-950 text-white flex items-center justify-center hover:bg-primary transition-all">
+                      <a href={office.mapUrl} target="_blank" rel="noopener noreferrer" className="w-12 h-12 rounded-xl bg-slate-950 text-white flex items-center justify-center hover:bg-[#0072F5] transition-all">
                         <ArrowRight className="w-5 h-5 -rotate-45" />
                       </a>
                     </Magnetic>
@@ -323,25 +361,15 @@ export default function ContactSection() {
                       loading="lazy"
                       className="transition-transform duration-[1s] "
                     />
-                    {/* {!activeMaps[office.city] && (
-                      <div
-                        className="absolute inset-0 bg-black/5 backdrop-blur-[2px] cursor-pointer flex items-center justify-center group/overlay transition-all hover:bg-black/10"
-                        onClick={() => setActiveMaps(prev => ({ ...prev, [office.city]: true }))}
-                      >
-                        <div className="bg-white/90 border border-slate-200 px-4 py-2 rounded-xl shadow-lg transform translate-y-4 opacity-0 group-hover/overlay:translate-y-0 group-hover/overlay:opacity-100 transition-all duration-300">
-                          <span className="text-[10px] font-black tracking-widest uppercase text-slate-900">Click to Interact</span>
-                        </div>
-                      </div>
-                    )} */}
                   </div>
                   <div className="p-8 grid grid-cols-2 gap-8 bg-white">
                     <div className="space-y-2">
-                      <span className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase block">Deployment Hub</span>
+                      <span className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase block">Address</span>
                       <p className="text-[11px] font-bold text-slate-600 leading-relaxed uppercase">{office.address}</p>
                     </div>
                     {office.phone && (
                       <div className="space-y-2">
-                        <span className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase block">Voice Comms</span>
+                        <span className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase block">Phone Number</span>
                         <p className="text-xl font-black tracking-tight text-slate-950">{office.phone}</p>
                       </div>
                     )}

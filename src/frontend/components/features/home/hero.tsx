@@ -108,7 +108,7 @@ const Hero = () => {
                     </div>
 
                     {/* Right Column Content - Interactive Widget */}
-                    <div className="lg:col-span-5 relative z-10 flex justify-center lg:justify-end">
+                    <div className="hidden lg:flex lg:col-span-5 relative z-10 justify-end">
                         <motion.div 
                             className="relative flex flex-col items-center justify-center w-full max-w-[340px] sm:max-w-[380px] h-[360px] sm:h-[420px]"
                             initial={{ opacity: 0, scale: 0.95 }}
