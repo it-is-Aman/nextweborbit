@@ -104,7 +104,7 @@ export async function sendContactNotification(data: {
   service?: string
   message: string
 }) {
-  const adminEmail = process.env.ADMIN_EMAIL || 'admin@nextweborbit.in'
+  const adminEmail = process.env.SMTP_USER || 'admin@nextweborbit.in'
 
   return sendEmail({
     to: adminEmail,
