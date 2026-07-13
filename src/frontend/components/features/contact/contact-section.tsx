@@ -339,21 +339,44 @@ export default function ContactSection() {
                 </div>
 
                 {/* Math Puzzle Check */}
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase ml-1">
-                    Security Question: What is {puzzle.num1} + {puzzle.num2}?
-                  </label>
-                  <input
-                    type="number"
-                    required
-                    placeholder="Enter the sum"
-                    className={`w-full bg-slate-50 border ${puzzleError ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all`}
-                    value={userAnswer}
-                    onChange={(e) => {
-                      setUserAnswer(e.target.value)
-                      setPuzzleError(false)
-                    }}
-                  />
+                <div className="p-6 rounded-3xl bg-slate-50 border border-slate-200/80 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div className="space-y-1">
+                      <span className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase">Spam Protection</span>
+                      <h4 className="text-sm font-bold text-slate-900">Are you human?</h4>
+                    </div>
+                    {/* Visual Badge */}
+                    <div className="px-2.5 py-1 rounded-md bg-[#0072F5]/10 text-[#0072F5] text-[10px] font-black uppercase tracking-wider">
+                      Security Check
+                    </div>
+                  </div>
+                  
+                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
+                    {/* Big Security Question Block */}
+                    <div className="flex-1 bg-white border border-slate-200 rounded-2xl px-5 py-4 flex items-center justify-center text-xl font-black tracking-widest text-[#2B1E77] select-none font-mono">
+                      {puzzle.num1} + {puzzle.num2} = ?
+                    </div>
+
+                    {/* Answer Input */}
+                    <div className="flex-1">
+                      <input
+                        type="number"
+                        required
+                        placeholder="Enter the sum"
+                        className={`w-full bg-white border ${puzzleError ? 'border-red-500 focus:border-red-500 ring-4 ring-red-500/5' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-5 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-[#0072F5]/5 transition-all`}
+                        value={userAnswer}
+                        onChange={(e) => {
+                          setUserAnswer(e.target.value)
+                          setPuzzleError(false)
+                        }}
+                      />
+                    </div>
+                  </div>
+                  {puzzleError && (
+                    <p className="text-red-500 text-[10px] font-black tracking-widest uppercase ml-1">
+                      Incorrect answer. Please solve the captcha.
+                    </p>
+                  )}
                 </div>
 
                 <AnimatePresence mode="wait">

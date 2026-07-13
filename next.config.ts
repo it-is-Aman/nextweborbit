@@ -91,6 +91,7 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "cdn.jsdelivr.net" },
       { protocol: "https", hostname: "upload.wikimedia.org" },
       { protocol: "https", hostname: "strapi.io" },
+      { protocol: "https", hostname: "ap-south-1.graphassets.com" },
       { protocol: "https", hostname: "assets.vercel.com" },
 
       // portfolio images domains

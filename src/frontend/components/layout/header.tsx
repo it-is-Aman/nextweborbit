@@ -314,6 +314,12 @@ export default function Header() {
 
             {/* Other Pages */}
             <li className="relative group/nav overflow-hidden py-2">
+              <Link href="/blog" className="font-semibold text-foreground hover:text-primary transition-colors whitespace-nowrap text-[clamp(1rem,1.2vw,1.25rem)]">
+                Blog
+              </Link>
+              <motion.div className="absolute bottom-1 left-0 h-[2px] bg-primary w-0 group-hover/nav:w-full transition-all duration-300" />
+            </li>
+            <li className="relative group/nav overflow-hidden py-2">
               <Link href="/gallery" className="font-semibold text-foreground hover:text-primary transition-colors whitespace-nowrap text-[clamp(1rem,1.2vw,1.25rem)]">
                 Gallery
               </Link>

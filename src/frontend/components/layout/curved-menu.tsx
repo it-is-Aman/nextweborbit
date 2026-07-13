@@ -28,6 +28,7 @@ const menuItems = [
             { name: 'Seo Packages', href: '/seo-packages' },
         ]
     },
+    { name: 'Blog', href: '/blog' },
     { name: 'Career', href: '/career' },
     { name: 'Contact', href: '/contact' }
 ]
