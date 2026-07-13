@@ -3,7 +3,7 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { motion } from 'framer-motion'
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { ChevronDown } from 'lucide-react'
 // import logo from '/images/logo-1.png'
@@ -64,6 +64,23 @@ const companyItems = [
 ]
 
 export default function Header() {
+  /* Commented out dynamic service subcategories fetch
+  const [dynamicServices, setDynamicServices] = useState<any[]>([])
+
+  useEffect(() => {
+    fetch('/api/services')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.services && data.services.length > 0) {
+          setDynamicServices(data.services)
+        }
+      })
+      .catch(err => console.error('Failed to fetch services menu:', err))
+  }, [])
+  */
+
+  const menuServices = services;
+
   const [activeVideo, setActiveVideo] = useState(services[0].video)
   const [hovered, setHovered] = useState<string | null>(null)
   const [companyActive, setCompanyActive] = useState(companyItems[0].title)
@@ -237,7 +254,7 @@ export default function Header() {
 
                 {/* Left: Service list */}
                 <div className="w-1/2 border-r border-border pr-4">
-                  {services.map((item) => (
+                  {menuServices.map((item) => (
                     <Link
                       key={item.title}
                       href={item.href}

@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 import dynamic from 'next/dynamic'
+import { useState, useEffect } from 'react'
 
 // const ThreeBackground = dynamic(() => import('./three-background'), { ssr: false })
 const FloatingReviews = dynamic(() => import('./floating-reviews'), { ssr: false })
@@ -10,7 +11,70 @@ const SpotlightButton = dynamic(() => import('@/frontend/animations').then(mod =
 
 import { ArrowRight, ArrowDown, ArrowUpRight } from 'lucide-react'
 
+interface HeroData {
+    title: string;
+    subtitle?: string;
+    ctaText?: string;
+    ctaLink?: string;
+    backgroundImage?: { url: string };
+}
+
 const Hero = () => {
+    const [heroData, setHeroData] = useState<HeroData | null>(null)
+    const [loading, setLoading] = useState(true)
+
+    useEffect(() => {
+        fetch('/api/hero')
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.heroes && data.heroes.length > 0) {
+                    setHeroData(data.heroes[0])
+                }
+                setLoading(false)
+            })
+            .catch(err => {
+                console.error('Failed to load hero data:', err)
+                setLoading(false)
+            })
+    }, [])
+
+    const parseTitle = (text: string) => {
+        if (!text) return null;
+        const parts = text.split(/(\[gradient\].*?\[\/gradient\])/g);
+        return parts.map((part, index) => {
+            if (part.startsWith('[gradient]') && part.endsWith('[/gradient]')) {
+                const innerText = part.replace('[gradient]', '').replace('[/gradient]', '');
+                return (
+                    <span key={index} className="text-transparent bg-clip-text bg-gradient-to-r from-[#2B1E77] to-[#0072F5]">
+                        {innerText}
+                    </span>
+                );
+            }
+            return part.split('\n').map((line, i) => (
+                <span key={`${index}-${i}`}>
+                    {line}
+                    {i < part.split('\n').length - 1 && <br className="hidden sm:inline" />}
+                </span>
+            ));
+        });
+    };
+
+    // Default static fallback copy
+    const title = heroData?.title ? parseTitle(heroData.title) : (
+        <>
+            We Build <br className="hidden sm:inline" />
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2B1E77] to-[#0072F5]">
+                High-Performance
+            </span> <br className="hidden sm:inline" />
+            Digital Systems That <br className="hidden sm:inline" />
+            Drive Real Business Growth
+        </>
+    );
+
+    const subtitle = heroData?.subtitle || "Web Development, UI/UX, Apps, SEO, and Digital Marketing — everything you need to scale your business with modern technology.";
+    const ctaText = heroData?.ctaText || "Get a Free Consultation";
+    const ctaLink = heroData?.ctaLink || "/contact";
+
     return (
         <section className="relative bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-white via-[#FAF9F6] to-neutral-100/60 text-neutral-900 min-h-[90vh] flex items-center overflow-hidden py-16 md:py-24">
             
@@ -64,12 +128,7 @@ const Hero = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, ease: "easeOut" }}
                         >
-                            We Build <br className="hidden sm:inline" />
-                            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2B1E77] to-[#0072F5]">
-                                High-Performance
-                            </span> <br className="hidden sm:inline" />
-                            Digital Systems That <br className="hidden sm:inline" />
-                            Drive Real Business Growth
+                            {title}
                         </motion.h1>
 
                         {/* Subheadline Paragraph */}
@@ -79,7 +138,7 @@ const Hero = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.2, ease: "easeOut" }}
                         >
-                            Web Development, UI/UX, Apps, SEO, and Digital Marketing — everything you need to scale your business with modern technology.
+                            {subtitle}
                         </motion.p>
 
                         {/* Interactive Buttons */}
@@ -89,9 +148,9 @@ const Hero = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.6, delay: 0.4 }}
                         >
-                            {/* Blue/Indigo Gradient Button "Get a Free Consultation" */}
-                            <Link href="/contact" className="group flex items-center justify-center bg-gradient-to-r from-[#2B1E77] to-[#0072F5] hover:opacity-95 text-white font-bold uppercase tracking-wider text-xs sm:text-sm px-6 py-3.5 rounded-full transition-all duration-300 transform hover:scale-[1.03] active:scale-[0.98] shadow-md hover:shadow-lg w-full sm:w-auto">
-                                Get a Free Consultation
+                            {/* Blue/Indigo Gradient Button */}
+                            <Link href={ctaLink} className="group flex items-center justify-center bg-gradient-to-r from-[#2B1E77] to-[#0072F5] hover:opacity-95 text-white font-bold uppercase tracking-wider text-xs sm:text-sm px-6 py-3.5 rounded-full transition-all duration-300 transform scale-[1.0] active:scale-[0.98] shadow-md hover:shadow-lg w-full sm:w-auto">
+                                {ctaText}
                                 <span className="ml-3 w-7 h-7 rounded-full bg-white text-[#2B1E77] flex items-center justify-center group-hover:translate-x-1 transition-transform shrink-0">
                                     <ArrowRight className="w-4 h-4 stroke-[2.5]" />
                                 </span>

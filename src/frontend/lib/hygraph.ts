@@ -14,6 +14,47 @@ export interface HygraphPost {
   };
 }
 
+export interface HygraphHero {
+  id: string;
+  title: string;
+  subtitle?: string;
+  ctaText?: string;
+  ctaLink?: string;
+  isActive: boolean;
+  backgroundImage?: {
+    url: string;
+  };
+}
+
+export interface HygraphPortfolioItem {
+  id: string;
+  title: string;
+  slug: string;
+  description?: string;
+  projectUrl?: string;
+  category: string;
+  type?: string;
+  coverImage?: {
+    url: string;
+  };
+}
+
+export interface HygraphServiceSubcategory {
+  id: string;
+  title: string;
+  slug: string;
+  parentCategory: string;
+  description: {
+    html: string;
+  };
+  customHeaderHtml?: {
+    html: string;
+  };
+  customFooterHtml?: {
+    html: string;
+  };
+}
+
 export async function fetchHygraph<T>(query: string): Promise<T | null> {
   const apiUrl = process.env.HYGRAPH_API_URL;
   if (!apiUrl) {
@@ -38,6 +79,9 @@ export async function fetchHygraph<T>(query: string): Promise<T | null> {
     }
 
     const json = await response.json();
+    if (json.errors) {
+      console.error('GraphQL Errors:', JSON.stringify(json.errors, null, 2));
+    }
     return json.data as T;
   } catch (error) {
     console.error('Error fetching from Hygraph:', error);
@@ -82,4 +126,76 @@ export async function getBlogPostBySlug(slug: string): Promise<HygraphPost | nul
   }`;
   const data = await fetchHygraph<{ post: HygraphPost }>(query);
   return data?.post || null;
+}
+
+export async function getHeroes(): Promise<HygraphHero[]> {
+  const query = `{
+    heroes(where: {isActive: true}) {
+      id
+      title
+      subtitle
+      ctaText
+      ctaLink
+      isActive
+      backgroundImage {
+        url
+      }
+    }
+  }`;
+  const data = await fetchHygraph<{ heroes: HygraphHero[] }>(query);
+  return data?.heroes || [];
+}
+
+export async function getPortfolioItems(): Promise<HygraphPortfolioItem[]> {
+  const query = `{
+    portfolioItems(first: 100) {
+      id
+      title
+      slug
+      description
+      projectUrl
+      category
+      type
+      coverImage {
+        url
+      }
+    }
+  }`;
+  const data = await fetchHygraph<{ portfolioItems: HygraphPortfolioItem[] }>(query);
+  return data?.portfolioItems || [];
+}
+
+export async function getServiceSubcategories(): Promise<HygraphServiceSubcategory[]> {
+  const query = `{
+    serviceSubcategories(first: 100) {
+      id
+      title
+      slug
+      parentCategory
+    }
+  }`;
+  const data = await fetchHygraph<{ serviceSubcategories: HygraphServiceSubcategory[] }>(query);
+  return data?.serviceSubcategories || [];
+}
+
+export async function getServiceSubcategoryBySlug(slug: string): Promise<HygraphServiceSubcategory | null> {
+  const query = `{
+    serviceSubcategory(where: {slug: "${slug}"}) {
+      id
+      title
+      slug
+      parentCategory
+      description {
+        html
+      }
+      customHeaderHtml {
+        html
+      }
+      customFooterHtml {
+        html
+      }
+    }
+  }`;
+  const data = await fetchHygraph<{ serviceSubcategory: HygraphServiceSubcategory }>(query);
+  return data?.serviceSubcategory || null;
 }

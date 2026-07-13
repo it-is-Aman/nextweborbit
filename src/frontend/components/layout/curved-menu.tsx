@@ -36,6 +36,38 @@ const menuItems = [
 // socialLinks moved to centralized constants
 
 export default function CurvedMenu() {
+    /* Commented out dynamic service subcategories fetch
+    const [dynamicServices, setDynamicServices] = useState<any[]>([])
+
+    useEffect(() => {
+        fetch('/api/services')
+            .then(res => res.json())
+            .then(data => {
+                if (data.success && data.services && data.services.length > 0) {
+                    setDynamicServices(data.services)
+                }
+            })
+            .catch(err => console.error('Failed to fetch mobile services:', err))
+    }, [])
+
+    const activeMenuItems = menuItems.map(item => {
+        if (item.name === 'Services') {
+            return {
+                ...item,
+                children: dynamicServices.length > 0
+                    ? dynamicServices.map(ds => ({
+                        name: ds.title,
+                        href: `/services/${ds.slug}`
+                      }))
+                    : item.children
+            }
+        }
+        return item
+    })
+    */
+
+    const activeMenuItems = menuItems;
+
     const [isOpen, setIsOpen] = useState(false)
     const [activeDropdown, setActiveDropdown] = useState<string | null>(null)
     const [mounted, setMounted] = useState(false)
@@ -236,7 +268,7 @@ export default function CurvedMenu() {
 
                                         {/* Menu Items */}
                                         <nav className="flex flex-col gap-3">
-                                            {menuItems.map((item, i) => (
+                                            {activeMenuItems.map((item, i) => (
                                                 <motion.div
                                                     key={item.name}
                                                     custom={i}

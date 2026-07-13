@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { Phone, Mail, MapPin } from 'lucide-react'
 import { CONTACT_INFO, SOCIAL_LINKS, COMPANY_INFO, SERVICES } from '@/constants'
 import { motion, AnimatePresence } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { ChevronDown } from 'lucide-react'
 
 import { api } from '@/frontend/lib/api-client'
@@ -32,6 +32,25 @@ const Footer = () => {
 
   // State for footer dropdowns (mobile/desktop toggle)
   const [openSection, setOpenSection] = useState<string | null>(null)
+  /* Commented out dynamic service subcategories fetch
+  const [dynamicServices, setDynamicServices] = useState<any[]>([])
+
+  useEffect(() => {
+    fetch('/api/services')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.services && data.services.length > 0) {
+          setDynamicServices(data.services)
+        }
+      })
+      .catch(err => console.error('Failed to fetch footer services:', err))
+  }, [])
+
+  const footerServices = dynamicServices.length > 0 ? dynamicServices : SERVICES;
+  */
+
+  const footerServices = SERVICES;
+  const dynamicServices: any[] = [];
 
   const toggleSection = (section: string) => {
     setOpenSection(openSection === section ? null : section)
@@ -178,7 +197,7 @@ const Footer = () => {
             <AnimatePresence>
               <div className={`overflow-hidden md:block ${openSection === 'services' ? 'block' : 'hidden'}`}>
                 <ul className="space-y-4 text-[clamp(0.875rem,1.5vw,1rem)]">
-                  {SERVICES.map((service, index) => (
+                  {footerServices.map((service, index) => (
                     <motion.li
                       key={service.id}
                       initial={{ opacity: 0, x: -10 }}
@@ -186,7 +205,7 @@ const Footer = () => {
                       viewport={{ once: true }}
                       transition={{ duration: 0.4, delay: index * 0.1 }}
                     >
-                      <Link href={`/${service.slug}`} className="text-background/80 hover:text-background transition-colors hover:translate-x-2 inline-block duration-300">
+                      <Link href={dynamicServices.length > 0 ? `/services/${service.slug}` : `/${service.slug}`} className="text-background/80 hover:text-background transition-colors hover:translate-x-2 inline-block duration-300">
                         {service.title}
                       </Link>
                     </motion.li>

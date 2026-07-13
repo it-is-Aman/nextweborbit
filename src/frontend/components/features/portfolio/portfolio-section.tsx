@@ -351,19 +351,36 @@ const portfolioData = [
 ]
 
 const PortfolioSection = () => {
-
-  const [selectedCategory] = useState("Web")
+  const [portfolioItems, setPortfolioItems] = useState<any[]>([])
+  const [selectedCategory, setSelectedCategory] = useState<string>("")
+  const [loading, setLoading] = useState(true)
   const containerRef = useRef(null)
 
   useEffect(() => {
+    fetch('/api/portfolio')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success && data.items) {
+          setPortfolioItems(data.items)
+          const cats = Array.from(new Set(data.items.map((item: any) => item.category || 'Web'))) as string[]
+          if (cats.length > 0) {
+            setSelectedCategory(cats[0])
+          }
+        }
+        setLoading(false)
+      })
+      .catch(err => {
+        console.error('Failed to load portfolio items:', err)
+        setLoading(false)
+      })
+  }, [])
 
+  useEffect(() => {
     const ctx = gsap.context(() => {
-
       gsap.fromTo(".portfolio-header",
         { y: 50, opacity: 0 },
         { y: 0, opacity: 1, duration: 1 }
       )
-
       gsap.fromTo(".portfolio-item",
         { y: 50, opacity: 0 },
         {
@@ -373,91 +390,111 @@ const PortfolioSection = () => {
           stagger: .1
         }
       )
-
     }, containerRef)
-
     return () => ctx.revert()
+  }, [loading])
 
-  }, [])
+  const categories = Array.from(new Set(portfolioItems.map(item => item.category || 'Web'))) as string[]
 
-  const filteredItems = portfolioData.filter(
-    item => item.category === selectedCategory
+  const filteredItems = portfolioItems.filter(
+    item => (item.category || 'Web') === selectedCategory
   )
 
   return (
-
     <section ref={containerRef} className="py-24 px-6 bg-black">
-
       <div className="max-w-[1400px] mx-auto">
-
         <div className="portfolio-header mb-16 text-center">
-
           <p className="text-blue-500 font-semibold mb-4">
             Selected Works
           </p>
-
-          <h2 className="text-6xl font-black text-white uppercase">
+          <h2 className="text-6xl font-black text-white uppercase mb-8">
             Our Portfolio
           </h2>
 
-        </div>
-
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-
-          {filteredItems.map((item, index) => (
-
-            <div
-              key={item.id}
-              className="portfolio-item group bg-[#0a0a0a] rounded-3xl p-4 border border-white/10 hover:border-white/20 transition"
-            >
-
-              <div className="relative h-[240px] rounded-2xl overflow-hidden mb-6">
-
-                <Image
-                  src={item.img}
-                  alt={item.title}
-                  fill
-                  className="object-cover group-hover:scale-105 transition duration-500"
-                />
-
-              </div>
-
-
-              <h3 className="text-2xl font-bold text-white mb-2">
-                {item.title}
-              </h3>
-
-              <p className="text-gray-400 text-sm mb-6">
-                {item.desc}
-              </p>
-
-
-              <Button
-                className="bg-white text-black hover:bg-gray-200"
-                onClick={() => window.open(item.url)}
-              >
-
-                Discover Service
-                <ArrowUpRight className="ml-2 w-4 h-4" />
-
-              </Button>
-
-
-              <span className="text-[70px] font-black text-[#151515] float-right -mt-10">
-                {(index + 1).toString().padStart(2, "0")}
-              </span>
-
+          {/* Dynamic Filter Tabs */}
+          {categories.length > 1 && (
+            <div className="flex flex-wrap items-center justify-center gap-4 mb-4">
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  onClick={() => setSelectedCategory(cat)}
+                  className={`px-6 py-2.5 rounded-full text-xs font-black uppercase tracking-wider transition-all duration-300 border ${
+                    selectedCategory === cat
+                      ? 'bg-white text-black border-white'
+                      : 'bg-transparent text-white border-white/20 hover:border-white'
+                  }`}
+                >
+                  {cat}
+                </button>
+              ))}
             </div>
-
-          ))}
-
+          )}
         </div>
 
+        {loading ? (
+          // Premium Skeleton Cards
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[...Array(3)].map((_, index) => (
+              <div key={index} className="bg-[#0a0a0a] rounded-3xl p-4 border border-white/5 animate-pulse">
+                <div className="h-[240px] rounded-2xl bg-white/5 mb-6" />
+                <div className="h-6 w-2/3 bg-white/5 rounded-md mb-2" />
+                <div className="h-4 w-full bg-white/5 rounded-md mb-6" />
+                <div className="h-10 w-32 bg-white/5 rounded-xl" />
+              </div>
+            ))}
+          </div>
+        ) : filteredItems.length === 0 ? (
+          <div className="text-center py-20 text-gray-500 font-bold uppercase tracking-wider text-xs">
+            No projects found in this category.
+          </div>
+        ) : (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {filteredItems.map((item, index) => {
+              const imageUrl = item.coverImage?.url || item.img || '/images/logo-1.png'
+              const projectUrl = item.projectUrl || item.url || '#'
+              const desc = item.description || item.desc || ''
+
+              return (
+                <div
+                  key={item.id}
+                  className="portfolio-item group bg-[#0a0a0a] rounded-3xl p-4 border border-white/10 hover:border-white/20 transition"
+                >
+                  <div className="relative h-[240px] rounded-2xl overflow-hidden mb-6">
+                    <Image
+                      src={imageUrl}
+                      alt={item.title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 400px"
+                      className="object-cover group-hover:scale-105 transition duration-500"
+                    />
+                  </div>
+
+                  <h3 className="text-2xl font-bold text-white mb-2">
+                    {item.title}
+                  </h3>
+
+                  <p className="text-gray-400 text-sm mb-6 line-clamp-2">
+                    {desc}
+                  </p>
+
+                  <Button
+                    className="bg-white text-black hover:bg-gray-200"
+                    onClick={() => window.open(projectUrl, '_blank')}
+                  >
+                    Discover Service
+                    <ArrowUpRight className="ml-2 w-4 h-4" />
+                  </Button>
+
+                  <span className="text-[70px] font-black text-[#151515] float-right -mt-10">
+                    {(index + 1).toString().padStart(2, "0")}
+                  </span>
+                </div>
+              )
+            })}
+          </div>
+        )}
       </div>
-
     </section>
-
   )
 }
 
