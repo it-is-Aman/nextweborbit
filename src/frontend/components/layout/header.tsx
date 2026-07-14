@@ -13,38 +13,38 @@ const services = [
   {
     title: 'Website Development',
     href: '/website-development',
-    video: '/videos/3130182-uhd_3840_2160_30fps.mp4',
-    desc: 'Modern, responsive, and performance-driven web design.'
+    imageSrc: '/images/services/website-development.png',
+    desc: 'Modern Website Development illustration featuring a responsive website on a laptop with HTML5, CSS3, JavaScript, React, Node.js, WordPress, PHP, and web development technologies in a light blue corporate theme.'
   },
   {
     title: 'Application Development',
     href: '/application-development',
-    video: '/videos/3129540-uhd_3840_2160_30fps.mp4',
-    desc: 'Custom mobile and web app solutions built to scale your business.'
+    imageSrc: '/images/services/application development.png',
+    desc: 'Modern Application Development illustration showing web and mobile app development, cloud architecture, API integration, Flutter, React, Next.js, DevOps workflow, analytics, and software engineers in a light blue corporate theme.'
   },
   {
     title: 'Software Development',
     href: '/software-development',
-    video: '/videos/3129957-uhd_3840_2160_25fps.mp4',
-    desc: 'Tailored software solutions for enterprises and startups alike.'
+    imageSrc: '/images/services/software-development.png',
+    desc: 'Modern Software Development illustration showing enterprise software architecture, cloud computing, API integration, DevOps pipeline, AI assistant, database management, software engineers, and programming technologies in a light blue corporate theme.'
   },
   {
     title: 'Digital Marketing',
     href: '/digital-marketing',
-    video: '/videos/3130284-uhd_3840_2160_30fps.mp4',
-    desc: 'Creative campaigns that connect your brand to real customers.'
+    imageSrc: '/images/services/digital-marketing.png',
+    desc: 'Modern Digital Marketing illustration showing SEO analytics, Google Ads, Meta Ads, social media marketing, email marketing, lead generation dashboard, analytics reports, and marketing professionals in a light blue corporate theme.'
   },
   {
     title: 'UI/UX Design',
     href: '/ui-ux-design',
-    video: '/videos/3141208-uhd_3840_2160_25fps.mp4',
-    desc: 'Crafting intuitive and engaging user experiences.'
+    imageSrc: '/images/services/ui-ux-design.png',
+    desc: 'Modern UI/UX Design illustration featuring responsive website layouts, mobile app interfaces, wireframes, design systems, prototyping tools, user journey mapping, and professional designers in a light blue corporate theme.'
   },
   {
     title: 'Seo Packages',
     href: '/seo-packages',
-    video: '/videos/3129576-uhd_3840_2160_30fps.mp4',
-    desc: 'Boost your visibility and rank higher with our proven SEO strategies.'
+    imageSrc: '/images/services/seo-services.png',
+    desc: 'Modern SEO Services illustration featuring keyword research, Google Search Console, Google Analytics, technical SEO, backlink analysis, website audit, Core Web Vitals, organic traffic dashboard, and SEO experts in a light blue corporate theme.'
   },
 ]
 
@@ -52,16 +52,16 @@ const companyItems = [
   {
     title: 'About Us',
     href: '/company/about',
-    video: '/videos/3141208-uhd_3840_2160_25fps.mp4',
-    desc: 'Know our story, mission, and the team powering our solutions.'
+    imageSrc: '/images/company/about-us.png',
+    desc: 'Modern About Us illustration showing a web design and digital marketing company with desktop monitor, team members, responsive website design, and business icons in a light blue corporate theme.'
   },
   {
     title: 'Our Portfolio',
     href: '/portfolio',
-    video: '/videos/3141210-uhd_3840_2160_25fps.mp4',
-    desc: 'Explore projects we have delivered across industries and scales.'
+    imageSrc: '/images/company/our-portfolio.png',
+    desc: 'Modern Our Portfolio illustration featuring a responsive web design portfolio displayed on a desktop monitor with website projects, UI/UX elements, analytics, mobile app design, and digital agency icons in a light blue corporate theme.'
   },
-]
+ ]
 
 export default function Header() {
   /* Commented out dynamic service subcategories fetch
@@ -81,11 +81,11 @@ export default function Header() {
 
   const menuServices = services;
 
-  const [activeVideo, setActiveVideo] = useState(services[0].video)
+  const [activeImage, setActiveImage] = useState(services[0].imageSrc)
   const [hovered, setHovered] = useState<string | null>(null)
   const [companyActive, setCompanyActive] = useState(companyItems[0].title)
   const [companyHovered, setCompanyHovered] = useState<string | null>(null)
-  const [companyActiveVideo, setCompanyActiveVideo] = useState<string | undefined>(companyItems[0].video)
+  const [companyActiveImage, setCompanyActiveImage] = useState<string | undefined>(companyItems[0].imageSrc)
   const hoverTimeoutRef = useRef<number | null>(null)
 
   return (
@@ -155,7 +155,7 @@ export default function Header() {
                         }
                         hoverTimeoutRef.current = window.setTimeout(() => {
                           setCompanyActive(item.title)
-                          setCompanyActiveVideo(item.video)
+                          setCompanyActiveImage(item.imageSrc)
                         }, 80)
                       }}
                       onMouseLeave={() => {
@@ -198,23 +198,23 @@ export default function Header() {
                   ))}
                 </div>
 
-                {/* Right: Preview panel (textual) */}
+                {/* Right: Preview panel (image) */}
                 <motion.div
-                  key={companyActive + (companyActiveVideo || 'text')}
+                  key={companyActive + (companyActiveImage || 'text')}
                   initial={{ opacity: 0, scale: 0.97 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.35 }}
                   className="w-1/2 pl-4 flex items-center justify-center"
                 >
-                  {companyActiveVideo ? (
-                    <div className="rounded-xl overflow-hidden w-full h-56 shadow-lg bg-black">
-                      <video
-                        src={companyActiveVideo}
-                        autoPlay
-                        loop
-                        muted
-                        playsInline
-                        className="w-full h-full object-cover"
+                  {companyActiveImage ? (
+                    <div className="rounded-xl overflow-hidden w-full h-56 shadow-lg relative bg-muted">
+                      <Image
+                        src={companyActiveImage}
+                        alt={companyActive || 'Company preview'}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 300px"
+                        className="object-cover"
+                        priority
                       />
                     </div>
                   ) : (
@@ -262,7 +262,7 @@ export default function Header() {
                         if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current)
                         setHovered(item.title)
                         hoverTimeoutRef.current = window.setTimeout(() => {
-                          setActiveVideo(item.video)
+                          setActiveImage(item.imageSrc)
                         }, 200)
                       }}
                       onMouseLeave={() => {
@@ -305,24 +305,22 @@ export default function Header() {
                   ))}
                 </div>
 
-                {/* Right: Video preview */}
+                {/* Right: Image preview */}
                 <motion.div
-                  key={activeVideo}
+                  key={activeImage}
                   initial={{ opacity: 0, scale: 0.97 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.35 }}
                   className="w-1/2 pl-4 flex items-center justify-center"
                 >
-                  <div className="rounded-xl overflow-hidden w-full h-56 shadow-lg bg-black">
-                    <video
-                      key={activeVideo}
-                      src={activeVideo}
-                      autoPlay
-                      loop
-                      muted
-                      playsInline
-                      preload="metadata"
-                      className="w-full h-full object-cover"
+                  <div className="rounded-xl overflow-hidden w-full h-56 shadow-lg relative bg-muted">
+                    <Image
+                      src={activeImage}
+                      alt={hovered || 'Service preview'}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 300px"
+                      className="object-cover"
+                      priority
                     />
                   </div>
                 </motion.div>
