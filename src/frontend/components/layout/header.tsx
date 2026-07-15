@@ -14,37 +14,37 @@ const services = [
     title: 'Website Development',
     href: '/website-development',
     imageSrc: '/images/services/website-development.png',
-    desc: 'Modern Website Development illustration featuring a responsive website on a laptop with HTML5, CSS3, JavaScript, React, Node.js, WordPress, PHP, and web development technologies in a light blue corporate theme.'
+    desc: 'Modern, responsive, and performance-driven web design.'
   },
   {
     title: 'Application Development',
     href: '/application-development',
     imageSrc: '/images/services/application development.png',
-    desc: 'Modern Application Development illustration showing web and mobile app development, cloud architecture, API integration, Flutter, React, Next.js, DevOps workflow, analytics, and software engineers in a light blue corporate theme.'
+    desc: 'Custom mobile and web app solutions built to scale your business.'
   },
   {
     title: 'Software Development',
     href: '/software-development',
     imageSrc: '/images/services/software-development.png',
-    desc: 'Modern Software Development illustration showing enterprise software architecture, cloud computing, API integration, DevOps pipeline, AI assistant, database management, software engineers, and programming technologies in a light blue corporate theme.'
+    desc: 'Tailored software solutions for enterprises and startups alike.'
   },
   {
     title: 'Digital Marketing',
     href: '/digital-marketing',
     imageSrc: '/images/services/digital-marketing.png',
-    desc: 'Modern Digital Marketing illustration showing SEO analytics, Google Ads, Meta Ads, social media marketing, email marketing, lead generation dashboard, analytics reports, and marketing professionals in a light blue corporate theme.'
+    desc: 'Creative campaigns that connect your brand to real customers.'
   },
   {
     title: 'UI/UX Design',
     href: '/ui-ux-design',
     imageSrc: '/images/services/ui-ux-design.png',
-    desc: 'Modern UI/UX Design illustration featuring responsive website layouts, mobile app interfaces, wireframes, design systems, prototyping tools, user journey mapping, and professional designers in a light blue corporate theme.'
+    desc: 'Crafting intuitive and engaging user experiences.'
   },
   {
     title: 'Seo Packages',
     href: '/seo-packages',
     imageSrc: '/images/services/seo-services.png',
-    desc: 'Modern SEO Services illustration featuring keyword research, Google Search Console, Google Analytics, technical SEO, backlink analysis, website audit, Core Web Vitals, organic traffic dashboard, and SEO experts in a light blue corporate theme.'
+    desc: 'Boost your visibility and rank higher with our proven SEO strategies.'
   },
 ]
 
@@ -53,13 +53,13 @@ const companyItems = [
     title: 'About Us',
     href: '/company/about',
     imageSrc: '/images/company/about-us.png',
-    desc: 'Modern About Us illustration showing a web design and digital marketing company with desktop monitor, team members, responsive website design, and business icons in a light blue corporate theme.'
+    desc: 'Know our story, mission, and the team powering our solutions.'
   },
   {
     title: 'Our Portfolio',
     href: '/portfolio',
     imageSrc: '/images/company/our-portfolio.png',
-    desc: 'Modern Our Portfolio illustration featuring a responsive web design portfolio displayed on a desktop monitor with website projects, UI/UX elements, analytics, mobile app design, and digital agency icons in a light blue corporate theme.'
+    desc: 'Explore projects we have delivered across industries and scales.'
   },
  ]
 

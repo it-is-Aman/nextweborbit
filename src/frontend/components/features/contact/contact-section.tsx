@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Mail, Phone, MapPin, Building, Globe, Server, Send, ArrowRight, CheckCircle2, XCircle } from 'lucide-react'
+import { Mail, Phone, MapPin, Building, Globe, Server, Send, ArrowRight, CheckCircle2, XCircle, RotateCw } from 'lucide-react'
 import { BlurReveal, Magnetic } from '@/frontend/animations'
 import { SOCIAL_LINKS } from '@/constants'
 import { Button } from '@/components/ui/button'
@@ -52,10 +52,15 @@ export default function ContactSection() {
   const [userAnswer, setUserAnswer] = useState('')
   const [puzzleError, setPuzzleError] = useState(false)
 
-  useEffect(() => {
+  const regeneratePuzzle = () => {
     const n1 = Math.floor(Math.random() * 10) + 1
     const n2 = Math.floor(Math.random() * 10) + 1
     setPuzzle({ num1: n1, num2: n2, sum: n1 + n2 })
+    setUserAnswer('')
+  }
+
+  useEffect(() => {
+    regeneratePuzzle()
   }, [])
 
   const hasHtmlOrScript = (val: string) => {
@@ -144,6 +149,7 @@ export default function ContactSection() {
         setStatus('success')
         setFormData({ firstName: '', lastName: '', email: '', phone: '', company: '', service: '', message: '' })
         setErrors({})
+        regeneratePuzzle()
         setTimeout(() => setStatus('idle'), 5000)
       } else {
         setStatus('error')
@@ -339,41 +345,33 @@ export default function ContactSection() {
                 </div>
 
                 {/* Math Puzzle Check */}
-                <div className="p-6 rounded-3xl bg-slate-50 border border-slate-200/80 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="space-y-1">
-                      <span className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase">Spam Protection</span>
-                      <h4 className="text-sm font-bold text-slate-900">Are you human?</h4>
-                    </div>
-                    {/* Visual Badge */}
-                    <div className="px-2.5 py-1 rounded-md bg-[#0072F5]/10 text-[#0072F5] text-[10px] font-black uppercase tracking-wider">
-                      Security Check
-                    </div>
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between ml-1">
+                    <label className="text-[20px] font-black tracking-[0.2em] text-[#0072F5] uppercase">
+                      Security Question: {puzzle.num1} + {puzzle.num2} = ?
+                    </label>
+                    <button
+                      type="button"
+                      onClick={regeneratePuzzle}
+                      className="text-[20px] font-black tracking-[0.15em] text-slate-400 hover:text-[#0072F5] uppercase transition-colors flex items-center gap-1.5 cursor-pointer"
+                      title="Get new puzzle"
+                    >
+                      <RotateCw className="w-5 h-5" /> New Puzzle
+                    </button>
                   </div>
-                  
-                  <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4">
-                    {/* Big Security Question Block */}
-                    <div className="flex-1 bg-white border border-slate-200 rounded-2xl px-5 py-4 flex items-center justify-center text-xl font-black tracking-widest text-[#2B1E77] select-none font-mono">
-                      {puzzle.num1} + {puzzle.num2} = ?
-                    </div>
-
-                    {/* Answer Input */}
-                    <div className="flex-1">
-                      <input
-                        type="number"
-                        required
-                        placeholder="Enter the sum"
-                        className={`w-full bg-white border ${puzzleError ? 'border-red-500 focus:border-red-500 ring-4 ring-red-500/5' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-5 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-4 focus:ring-[#0072F5]/5 transition-all`}
-                        value={userAnswer}
-                        onChange={(e) => {
-                          setUserAnswer(e.target.value)
-                          setPuzzleError(false)
-                        }}
-                      />
-                    </div>
-                  </div>
+                  <input
+                    type="number"
+                    required
+                    placeholder="Enter the sum"
+                    className={`w-full bg-slate-50 border ${puzzleError ? 'border-red-500 focus:border-red-500 ring-4 ring-red-500/5' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all`}
+                    value={userAnswer}
+                    onChange={(e) => {
+                      setUserAnswer(e.target.value)
+                      setPuzzleError(false)
+                    }}
+                  />
                   {puzzleError && (
-                    <p className="text-red-500 text-[10px] font-black tracking-widest uppercase ml-1">
+                    <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
                       Incorrect answer. Please solve the captcha.
                     </p>
                   )}

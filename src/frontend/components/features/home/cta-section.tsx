@@ -44,7 +44,7 @@ const CTASection = () => {
                             {/* GIF Image */}
                             <Link href="/contact" className="block w-full h-full relative">
                                 <Image
-                                    src="/uploads/images/connect.gif"
+                                    src="/images/connect.gif"
                                     alt="CTA Visual"
                                     fill
                                     className="object-cover opacity-80 group-hover:scale-105 transition-transform duration-700"
