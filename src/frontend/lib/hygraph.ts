@@ -199,3 +199,62 @@ export async function getServiceSubcategoryBySlug(slug: string): Promise<Hygraph
   const data = await fetchHygraph<{ serviceSubcategory: HygraphServiceSubcategory }>(query);
   return data?.serviceSubcategory || null;
 }
+
+export interface HygraphTeamMember {
+  id: string;
+  name: string;
+  role: string;
+  bio?: string;
+  image?: {
+    url: string;
+  };
+  order?: number;
+  isActive?: boolean;
+}
+
+export async function getTeamMembers(): Promise<HygraphTeamMember[]> {
+  const query = `{
+    teamMembers(orderBy: order_ASC, where: {isActive: true}) {
+      id
+      name
+      role
+      bio
+      image {
+        url
+      }
+      order
+      isActive
+    }
+  }`;
+  
+  try {
+    const data = await fetchHygraph<{ teamMembers: HygraphTeamMember[] }>(query);
+    if (data?.teamMembers && data.teamMembers.length > 0) {
+      return data.teamMembers;
+    }
+  } catch (err) {
+    console.warn('Standard teamMembers query failed, trying fallback query:', err);
+  }
+
+  // Fallback query in case order or isActive are missing/different in schema
+  const fallbackQuery = `{
+    teamMembers {
+      id
+      name
+      role
+      bio
+      image {
+        url
+      }
+    }
+  }`;
+
+  try {
+    const data = await fetchHygraph<{ teamMembers: HygraphTeamMember[] }>(fallbackQuery);
+    return data?.teamMembers || [];
+  } catch (err) {
+    console.error('Fallback teamMembers query also failed:', err);
+    return [];
+  }
+}
+

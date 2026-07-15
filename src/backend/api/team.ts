@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/backend/lib/prisma'
 import type { ApiResponse, TeamResponse } from '@/types/api'
 import { teamMemberSchema } from '@/shared/validation'
+import { getTeamMembers as getHygraphTeamMembers } from '@/frontend/lib/hygraph'
 
 const MOCK_TEAM_MEMBERS = [
     {
@@ -35,6 +36,28 @@ const MOCK_TEAM_MEMBERS = [
 
 export async function getTeamMembers() {
     try {
+        // Try fetching from Hygraph first
+        try {
+            const hygraphMembers = await getHygraphTeamMembers()
+            if (hygraphMembers && hygraphMembers.length > 0) {
+                const response: ApiResponse<TeamResponse> = {
+                    success: true,
+                    data: {
+                        members: hygraphMembers.map((member) => ({
+                            id: member.id,
+                            name: member.name,
+                            role: member.role,
+                            bio: member.bio || '',
+                            image: member.image?.url || '/images/placeholder.jpg',
+                        })),
+                    },
+                }
+                return NextResponse.json(response)
+            }
+        } catch (hygraphErr) {
+            console.warn('[Hygraph] Failed to fetch team members. Falling back to Prisma database.', hygraphErr)
+        }
+
         // Fetch active team members from database, ordered by order field
         const members = await prisma.teamMember.findMany({
             where: { isActive: true },
@@ -51,7 +74,6 @@ export async function getTeamMembers() {
         const response: ApiResponse<TeamResponse> = {
             success: true,
             data: {
-
                 members: members.map((member) => ({
                     id: member.id,
                     name: member.name,
