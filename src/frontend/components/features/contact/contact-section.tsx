@@ -2,7 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Mail, Phone, MapPin, Building, Globe, Server, Send, ArrowRight, CheckCircle2, XCircle, RotateCw } from 'lucide-react'
+import { Mail, Phone, MapPin, Building, Globe, Server, Send, ArrowRight, CheckCircle2, XCircle, RotateCw, ChevronDown } from 'lucide-react'
 import { BlurReveal, Magnetic } from '@/frontend/animations'
 import { SOCIAL_LINKS } from '@/constants'
 import { Button } from '@/components/ui/button'
@@ -17,7 +17,7 @@ const CONTACT_INFO_DISPLAY = {
       address: 'Sector 59, Noida,Uttar Pradesh, PIN 201309',
       phone: '+91-8588900105',
       mapUrl: 'https://maps.app.goo.gl/gcCKAUSALEzMP6WV8',
-      embedSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5591.579581311327!2d77.36272873868431!3d28.608214771747306!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce565fcf639e7%3A0x677c4d7bd48136!2sSector%2059%2C%20Noida%2C%20Uttar%20Pradesh%20201309!5e1!3m2!1sen!2sin!4v1780131966085!5m2!1sen!2sin" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade'
+      embedSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5591.579581311327!2d77.36272873868431!3d28.608214771747306!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce565fcf639e7%3A0x677c4d7bd48136!2sSector%2059%2C%20Noida%2C%20Uttar%20Pradesh%20201309!5e1!3m2!1sen!2sin!4v1780131966085!5m2!1sen!2sin'
     },
     // {
     //   city: 'New York',
@@ -48,19 +48,116 @@ export default function ContactSection() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
   const [activeMaps, setActiveMaps] = useState<{ [key: string]: boolean }>({})
 
-  const [puzzle, setPuzzle] = useState({ num1: 11, num2: 4, sum: 15 })
-  const [userAnswer, setUserAnswer] = useState('')
-  const [puzzleError, setPuzzleError] = useState(false)
+  const [captchaCode, setCaptchaCode] = useState('')
+  const [captchaInput, setCaptchaInput] = useState('')
+  const [captchaError, setCaptchaError] = useState(false)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
 
-  const regeneratePuzzle = () => {
-    const n1 = Math.floor(Math.random() * 10) + 1
-    const n2 = Math.floor(Math.random() * 10) + 1
-    setPuzzle({ num1: n1, num2: n2, sum: n1 + n2 })
-    setUserAnswer('')
+  const generateCaptcha = () => {
+    const chars = '23456789abcdefghijkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ'
+    let code = ''
+    for (let i = 0; i < 5; i++) {
+      code += chars.charAt(Math.floor(Math.random() * chars.length))
+    }
+    setCaptchaCode(code)
+    setCaptchaInput('')
+    setCaptchaError(false)
+  }
+
+  const drawCaptcha = (code: string) => {
+    const canvas = canvasRef.current
+    if (!canvas) return
+    const ctx = canvas.getContext('2d')
+    if (!ctx) return
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    
+    const bgGradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height)
+    bgGradient.addColorStop(0, '#f8fafc')
+    bgGradient.addColorStop(1, '#f1f5f9')
+    ctx.fillStyle = bgGradient
+    ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+    ctx.strokeStyle = '#e2e8f0'
+    ctx.lineWidth = 1
+    ctx.strokeRect(0, 0, canvas.width, canvas.height)
+
+    ctx.strokeStyle = 'rgba(203, 213, 225, 0.4)'
+    for (let i = 0; i < canvas.width; i += 20) {
+      ctx.beginPath()
+      ctx.moveTo(i, 0)
+      ctx.lineTo(i, canvas.height)
+      ctx.stroke()
+    }
+    for (let i = 0; i < canvas.height; i += 15) {
+      ctx.beginPath()
+      ctx.moveTo(0, i)
+      ctx.lineTo(canvas.width, i)
+      ctx.stroke()
+    }
+
+    const lineColors = ['#94a3b8', '#cbd5e1', '#0072F5', '#f43f5e', '#10b981']
+    for (let i = 0; i < 4; i++) {
+      ctx.strokeStyle = lineColors[Math.floor(Math.random() * lineColors.length)]
+      ctx.lineWidth = Math.random() * 1.5 + 1
+      ctx.beginPath()
+      ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height)
+      ctx.bezierCurveTo(
+        Math.random() * canvas.width, Math.random() * canvas.height,
+        Math.random() * canvas.width, Math.random() * canvas.height,
+        Math.random() * canvas.width, Math.random() * canvas.height
+      )
+      ctx.stroke()
+    }
+
+    ctx.textBaseline = 'middle'
+    const fontFamilies = ['Arial', 'Verdana', 'Georgia', 'Courier New', 'Times New Roman']
+    
+    const charSpacing = canvas.width / (code.length + 1)
+    for (let i = 0; i < code.length; i++) {
+      const char = code[i]
+      const fontSize = Math.floor(Math.random() * 6) + 22
+      const fontFamily = fontFamilies[Math.floor(Math.random() * fontFamilies.length)]
+      ctx.font = `bold ${fontSize}px ${fontFamily}`
+      
+      const textColors = [
+        '#0f172a',
+        '#1e293b',
+        '#0072F5',
+        '#4f46e5',
+        '#0891b2',
+        '#c026d3',
+        '#2563eb',
+      ]
+      ctx.fillStyle = textColors[Math.floor(Math.random() * textColors.length)]
+
+      const x = charSpacing * (i + 1) - 5 + (Math.random() * 6 - 3)
+      const y = canvas.height / 2 + (Math.random() * 8 - 4)
+
+      ctx.save()
+      ctx.translate(x, y)
+      const rotationAngle = (Math.random() * 40 - 20) * Math.PI / 180
+      ctx.rotate(rotationAngle)
+      ctx.fillText(char, 0, 0)
+      ctx.restore()
+    }
+
+    for (let i = 0; i < 40; i++) {
+      ctx.fillStyle = 'rgba(148, 163, 184, 0.4)'
+      ctx.beginPath()
+      ctx.arc(Math.random() * canvas.width, Math.random() * canvas.height, Math.random() * 1.5 + 0.5, 0, Math.PI * 2)
+      ctx.fill()
+    }
   }
 
   useEffect(() => {
-    regeneratePuzzle()
+    if (captchaCode) {
+      drawCaptcha(captchaCode)
+    }
+  }, [captchaCode])
+
+  useEffect(() => {
+    generateCaptcha()
   }, [])
 
   const hasHtmlOrScript = (val: string) => {
@@ -97,6 +194,20 @@ export default function ContactSection() {
       } else if (!/^[0-9]{10}$/.test(value)) {
         error = 'Phone number must be exactly 10 digits'
       }
+    } else if (name === 'company') {
+      if (value && value.length > 100) {
+        error = 'Company name cannot exceed 100 characters'
+      } else if (value && hasHtmlOrScript(value)) {
+        error = 'HTML or scripts are not allowed'
+      }
+    } else if (name === 'service') {
+      if (!value.trim()) {
+        error = 'Please select a service'
+      } else if (value.length > 100) {
+        error = 'Service name cannot exceed 100 characters'
+      } else if (hasHtmlOrScript(value)) {
+        error = 'HTML or scripts are not allowed'
+      }
     } else if (name === 'message') {
       if (!value.trim()) {
         error = 'Message is required'
@@ -117,8 +228,10 @@ export default function ContactSection() {
     const e2 = validateField('lastName', formData.lastName || '')
     const e3 = validateField('email', formData.email)
     const e4 = validateField('phone', formData.phone)
-    const e5 = validateField('message', formData.message)
-    return !(e1 || e2 || e3 || e4 || e5)
+    const e5 = validateField('company', formData.company || '')
+    const e6 = validateField('service', formData.service || '')
+    const e7 = validateField('message', formData.message)
+    return !(e1 || e2 || e3 || e4 || e5 || e6 || e7)
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -134,14 +247,15 @@ export default function ContactSection() {
     setStatus('idle')
     setErrorMessage(null)
 
-    if (parseInt(userAnswer) !== puzzle.sum) {
-      setPuzzleError(true)
+    if (captchaInput.toLowerCase() !== captchaCode.toLowerCase()) {
+      setCaptchaError(true)
       setStatus('error')
-      setErrorMessage('Incorrect answer to security question.')
+      setErrorMessage('Incorrect verification code.')
       setIsSubmitting(false)
+      generateCaptcha()
       return
     }
-    setPuzzleError(false)
+    setCaptchaError(false)
 
     try {
       const response = await api.post<ApiResponse<ContactFormResponse>>('/api/contact', formData as ContactFormRequest)
@@ -149,15 +263,17 @@ export default function ContactSection() {
         setStatus('success')
         setFormData({ firstName: '', lastName: '', email: '', phone: '', company: '', service: '', message: '' })
         setErrors({})
-        regeneratePuzzle()
+        generateCaptcha()
         setTimeout(() => setStatus('idle'), 5000)
       } else {
         setStatus('error')
         setErrorMessage(response.error || 'Submission failed')
+        generateCaptcha()
       }
     } catch (err) {
       setStatus('error')
       setErrorMessage(err instanceof Error ? err.message : 'Error submitting form')
+      generateCaptcha()
     } finally {
       setIsSubmitting(false)
     }
@@ -253,86 +369,150 @@ export default function ContactSection() {
                 <p className="text-[10px] font-black tracking-[0.3em] text-slate-400 uppercase">We typically reply within 24 hours</p>
               </div>
 
-              <form onSubmit={handleSubmit} className="space-y-8">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase ml-1">First Name</label>
-                    <input
-                      type="text"
-                      required
-                      placeholder="Your first name"
-                      className={`w-full bg-slate-50 border ${errors.firstName ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all`}
-                      value={formData.firstName}
-                      onChange={(e) => {
-                        setFormData({ ...formData, firstName: e.target.value })
-                        validateField('firstName', e.target.value)
-                      }}
-                    />
-                    {errors.firstName && (
-                      <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.firstName}</p>
-                    )}
-                  </div>
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase ml-1">Last Name</label>
-                    <input
-                      type="text"
-                      placeholder="Your last name (optional)"
-                      className={`w-full bg-slate-50 border ${errors.lastName ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all`}
-                      value={formData.lastName}
-                      onChange={(e) => {
-                        setFormData({ ...formData, lastName: e.target.value })
-                        validateField('lastName', e.target.value)
-                      }}
-                    />
-                    {errors.lastName && (
-                      <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.lastName}</p>
-                    )}
-                  </div>
+              <form onSubmit={handleSubmit} className="space-y-6">
+                {/* First Name */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase ml-1">
+                    First Name <span className="text-red-500">*</span> :
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Enter First Name"
+                    className={`w-full bg-slate-50 border ${errors.firstName ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all`}
+                    value={formData.firstName}
+                    onChange={(e) => {
+                      setFormData({ ...formData, firstName: e.target.value })
+                      validateField('firstName', e.target.value)
+                    }}
+                  />
+                  {errors.firstName && (
+                    <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.firstName}</p>
+                  )}
                 </div>
 
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase ml-1">Email Address</label>
-                    <input
-                      type="email"
-                      required
-                      placeholder="your.email@example.com"
-                      className={`w-full bg-slate-50 border ${errors.email ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all`}
-                      value={formData.email}
-                      onChange={(e) => {
-                        setFormData({ ...formData, email: e.target.value })
-                        validateField('email', e.target.value)
-                      }}
-                    />
-                    {errors.email && (
-                      <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.email}</p>
-                    )}
-                  </div>
-                  <div className="space-y-3">
-                    <label className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase ml-1">Phone Number (10 Digits)</label>
-                    <input
-                      type="tel"
-                      required
-                      placeholder="10-digit mobile number"
-                      className={`w-full bg-slate-50 border ${errors.phone ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all`}
-                      value={formData.phone}
-                      onChange={(e) => {
-                        setFormData({ ...formData, phone: e.target.value })
-                        validateField('phone', e.target.value)
-                      }}
-                    />
-                    {errors.phone && (
-                      <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.phone}</p>
-                    )}
-                  </div>
+                {/* Last Name */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase ml-1">
+                    Last Name (Optional) :
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter Last Name"
+                    className={`w-full bg-slate-50 border ${errors.lastName ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all`}
+                    value={formData.lastName}
+                    onChange={(e) => {
+                      setFormData({ ...formData, lastName: e.target.value })
+                      validateField('lastName', e.target.value)
+                    }}
+                  />
+                  {errors.lastName && (
+                    <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.lastName}</p>
+                  )}
                 </div>
 
-                <div className="space-y-3">
-                  <label className="text-[10px] font-black tracking-[0.2em] text-slate-400 uppercase ml-1">Your Message</label>
+                {/* Email Address */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase ml-1">
+                    Email ID <span className="text-red-500">*</span> :
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="Please Enter Email ID"
+                    className={`w-full bg-slate-50 border ${errors.email ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all`}
+                    value={formData.email}
+                    onChange={(e) => {
+                      setFormData({ ...formData, email: e.target.value })
+                      validateField('email', e.target.value)
+                    }}
+                  />
+                  {errors.email && (
+                    <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.email}</p>
+                  )}
+                </div>
+
+                {/* Phone Number */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase ml-1">
+                    Contact No <span className="text-red-500">*</span> :
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    placeholder="Enter Contact Number"
+                    className={`w-full bg-slate-50 border ${errors.phone ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all`}
+                    value={formData.phone}
+                    onChange={(e) => {
+                      setFormData({ ...formData, phone: e.target.value })
+                      validateField('phone', e.target.value)
+                    }}
+                  />
+                  {errors.phone && (
+                    <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.phone}</p>
+                  )}
+                </div>
+
+                {/* Company Name */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase ml-1">
+                    Company Name (Optional) :
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Enter Company Name"
+                    className={`w-full bg-slate-50 border ${errors.company ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all`}
+                    value={formData.company}
+                    onChange={(e) => {
+                      setFormData({ ...formData, company: e.target.value })
+                      validateField('company', e.target.value)
+                    }}
+                  />
+                  {errors.company && (
+                    <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.company}</p>
+                  )}
+                </div>
+
+                {/* Select Services */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase ml-1">
+                    Select Services <span className="text-red-500">*</span> :
+                  </label>
+                  <div className="relative">
+                    <select
+                      required
+                      className={`w-full bg-slate-50 border ${errors.service ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-4 text-sm font-black focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all appearance-none cursor-pointer pr-12 ${formData.service ? 'text-slate-900' : 'text-slate-400'}`}
+                      value={formData.service}
+                      onChange={(e) => {
+                        setFormData({ ...formData, service: e.target.value })
+                        validateField('service', e.target.value)
+                      }}
+                    >
+                      <option value="">Select a service</option>
+                      <option value="Web Development">Web Development</option>
+                      <option value="Software Development">Software Development</option>
+                      <option value="SEO & Digital Marketing">SEO & Digital Marketing</option>
+                      <option value="IT Support & Services">IT Support & Services</option>
+                      <option value="Other">Other / Custom Request</option>
+                    </select>
+                    <div className="absolute right-6 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400">
+                      <ChevronDown className="w-4 h-4" />
+                    </div>
+                  </div>
+                  {errors.service && (
+                    <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">{errors.service}</p>
+                  )}
+                </div>
+
+                {/* Your Message */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase ml-1">
+                    Write Your Inquiry <span className="text-red-500">*</span> (In Brief) :
+                  </label>
                   <textarea
                     required
-                    placeholder="Tell us about your project or requirements..."
-                    className={`w-full bg-slate-50 border ${errors.message ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-5 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all min-h-[160px] resize-none`}
+                    placeholder="Enter Query"
+                    className={`w-full bg-slate-50 border ${errors.message ? 'border-red-500 focus:border-red-500' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-5 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all min-h-[140px] resize-none`}
                     value={formData.message}
                     onChange={(e) => {
                       setFormData({ ...formData, message: e.target.value })
@@ -344,35 +524,42 @@ export default function ContactSection() {
                   )}
                 </div>
 
-                {/* Math Puzzle Check */}
-                <div className="space-y-3">
-                  <div className="flex items-center justify-between ml-1">
-                    <label className="text-[20px] font-black tracking-[0.2em] text-[#0072F5] uppercase">
-                      Security Question: {puzzle.num1} + {puzzle.num2} = ?
-                    </label>
-                    <button
-                      type="button"
-                      onClick={regeneratePuzzle}
-                      className="text-[20px] font-black tracking-[0.15em] text-slate-400 hover:text-[#0072F5] uppercase transition-colors flex items-center gap-1.5 cursor-pointer"
-                      title="Get new puzzle"
-                    >
-                      <RotateCw className="w-5 h-5" /> New Puzzle
-                    </button>
+                {/* Verification Code Captcha */}
+                <div className="space-y-2">
+                  <label className="text-[10px] font-black tracking-[0.2em] text-slate-500 uppercase ml-1">
+                    Enter Verification Code <span className="text-red-500">*</span> :
+                  </label>
+                  <div className="flex flex-col sm:flex-row gap-4 items-stretch sm:items-center">
+                    <input
+                      type="text"
+                      required
+                      placeholder="Enter Verification Code"
+                      className={`flex-1 bg-slate-50 border ${captchaError ? 'border-red-500 focus:border-red-500 ring-4 ring-red-500/5' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all`}
+                      value={captchaInput}
+                      onChange={(e) => {
+                        setCaptchaInput(e.target.value)
+                        setCaptchaError(false)
+                      }}
+                    />
+                    <div className="flex items-center gap-3">
+                      {/* Captcha Canvas */}
+                      <div className="border border-slate-200 rounded-2xl overflow-hidden bg-slate-50 flex items-center justify-center p-1 select-none shadow-sm">
+                        <canvas ref={canvasRef} width="130" height="48" className="block cursor-pointer" onClick={generateCaptcha} title="Click to refresh" />
+                      </div>
+                      {/* Refresh Button */}
+                      <button
+                        type="button"
+                        onClick={generateCaptcha}
+                        className="w-12 h-12 rounded-2xl flex items-center justify-center border border-slate-200 hover:border-red-500 text-red-500 hover:text-red-600 hover:bg-red-50/50 transition-colors shadow-sm cursor-pointer"
+                        title="Refresh Verification Code"
+                      >
+                        <RotateCw className="w-5 h-5 transition-transform active:rotate-180 duration-300" />
+                      </button>
+                    </div>
                   </div>
-                  <input
-                    type="number"
-                    required
-                    placeholder="Enter the sum"
-                    className={`w-full bg-slate-50 border ${puzzleError ? 'border-red-500 focus:border-red-500 ring-4 ring-red-500/5' : 'border-slate-200 focus:border-[#0072F5]'} rounded-2xl px-6 py-4 text-sm font-black text-slate-900 placeholder:text-slate-400 focus:outline-none focus:bg-white focus:ring-4 focus:ring-[#0072F5]/5 transition-all`}
-                    value={userAnswer}
-                    onChange={(e) => {
-                      setUserAnswer(e.target.value)
-                      setPuzzleError(false)
-                    }}
-                  />
-                  {puzzleError && (
+                  {captchaError && (
                     <p className="text-red-500 text-[10px] font-bold mt-1 ml-1">
-                      Incorrect answer. Please solve the captcha.
+                      Incorrect verification code. Please try again.
                     </p>
                   )}
                 </div>
@@ -403,33 +590,40 @@ export default function ContactSection() {
                   ) : null}
                 </AnimatePresence>
 
-                <div className="flex flex-col sm:flex-row gap-4">
-                  <Magnetic>
-                    <button
-                      type="submit"
-                      disabled={isSubmitting}
-                      className="relative flex-[2] bg-slate-950 text-white px-8 py-5 rounded-2xl font-black text-xs tracking-[0.3em] uppercase group overflow-hidden transition-all active:scale-[0.98] disabled:opacity-50"
-                    >
-                      <span className="relative z-10 flex items-center justify-center gap-3">
-                        {isSubmitting ? 'SENDING...' : (
-                          <>
-                            Send Message <Send className="w-3.5 h-3.5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
-                          </>
-                        )}
-                      </span>
-                      <div className="absolute inset-0 bg-[#0072F5] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
-                    </button>
-                  </Magnetic>
-                  <Magnetic>
-                    <a
-                      href={`https://wa.me/${whatsapp}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 px-8 py-5 rounded-2xl border-2 border-slate-200 font-black text-xs tracking-[0.2em] uppercase text-slate-950 hover:bg-slate-950 hover:text-white hover:border-slate-950 transition-all text-center flex items-center justify-center bg-white shadow-sm"
-                    >
-                      WhatsApp
-                    </a>
-                  </Magnetic>
+                <div className="flex flex-col sm:flex-row gap-4 items-center justify-between pt-2">
+                  <span className="text-[10px] font-black tracking-widest text-slate-400 uppercase self-start sm:self-center">
+                    <span className="text-red-500">*</span> Fields Are Mandatory
+                  </span>
+                  
+                  <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                    <Magnetic>
+                      <button
+                        type="submit"
+                        disabled={isSubmitting}
+                        className="relative bg-slate-950 text-white px-8 py-5 rounded-2xl font-black text-xs tracking-[0.3em] uppercase group overflow-hidden transition-all active:scale-[0.98] disabled:opacity-50 min-w-[160px] w-full sm:w-auto"
+                      >
+                        <span className="relative z-10 flex items-center justify-center gap-3">
+                          {isSubmitting ? 'SENDING...' : (
+                            <>
+                              Submit <Send className="w-3.5 h-3.5 group-hover:translate-x-1 group-hover:-translate-y-1 transition-transform" />
+                            </>
+                          )}
+                        </span>
+                        <div className="absolute inset-0 bg-[#0072F5] translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
+                      </button>
+                    </Magnetic>
+                    
+                    <Magnetic>
+                      <a
+                        href={`https://wa.me/${whatsapp}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-8 py-5 rounded-2xl border-2 border-slate-200 font-black text-xs tracking-[0.2em] uppercase text-slate-950 hover:bg-slate-950 hover:text-white hover:border-slate-950 transition-all text-center flex items-center justify-center bg-white shadow-sm w-full sm:w-auto"
+                      >
+                        WhatsApp
+                      </a>
+                    </Magnetic>
+                  </div>
                 </div>
               </form>
             </div>
